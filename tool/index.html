@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep in Touch — Life Systems</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { font: 17px/1.5 system-ui, sans-serif; max-width: 680px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 1.6rem; margin-bottom: 2px; }
+  p.sub { margin-top: 0; opacity: 0.8; }
+  form { display: grid; grid-template-columns: 1fr 130px 150px auto; gap: 8px; align-items: end;
+         margin: 18px 0; }
+  label { display: block; font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
+  input, select, button { font: inherit; padding: 9px; border-radius: 8px;
+    border: 1px solid rgba(128,128,128,0.5); background: transparent; color: inherit; }
+  button { cursor: pointer; font-weight: 600; border-color: transparent; }
+  ul { list-style: none; padding: 0; }
+  li { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px;
+       border: 1px solid rgba(128,128,128,0.25); margin-bottom: 6px; }
+  .who { flex: 1; }
+  .tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px;
+         border-radius: 999px; font-weight: 700; }
+  .overdue { background: #d9534f; color: #fff; }
+  .new { background: #6a7; color: #fff; }
+  .ok { background: rgba(128,128,128,0.25); }
+  .meta { font-size: 0.82rem; opacity: 0.7; }
+  .small { padding: 5px 9px; font-size: 0.85rem; }
+  footer { margin-top: 28px; font-size: 0.9rem; opacity: 0.75; }
+  a { color: inherit; }
+  @media (max-width: 560px){ form { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+  <h1>Keep in Touch</h1>
+  <p class="sub">The people who matter, on a rhythm. This tool tells you who you are overdue to
+     reach out to. Everything stays on your device — nothing is sent anywhere.</p>
+
+  <form id="add">
+    <div><label for="name">Name</label><input id="name" required placeholder="e.g. Alex"></div>
+    <div><label for="cadence">Every</label>
+      <select id="cadence">
+        <option value="weekly">week</option>
+        <option value="biweekly">2 weeks</option>
+        <option value="monthly" selected>month</option>
+        <option value="quarterly">3 months</option>
+        <option value="semiannually">6 months</option>
+        <option value="annually">year</option>
+      </select>
+    </div>
+    <div><label for="last">Last talked (optional)</label><input id="last" type="date"></div>
+    <button id="addBtn">Add</button>
+  </form>
+
+  <ul id="list" aria-live="polite"></ul>
+
+  <footer>
+    New here? Read <a href="../systems/start-with-one.md">Start With One System</a>, or the
+    <a href="../systems/keep-in-touch-system.md">Keep in Touch system</a>. Made by Mick.
+    <a href="../README.md">Who's Mick? →</a>
+  </footer>
+
+<script>
+// mirror of tool/keepintouch.js — change both together
+// ---8<--- keepintouch core
+const CADENCES = {
+  weekly: 7, biweekly: 14, monthly: 30, quarterly: 91, semiannually: 182, annually: 365,
+};
+function daysBetween(a, b) {
+  return Math.round(Math.abs(Date.parse(b) - Date.parse(a)) / 86400000);
+}
+function dueContacts(people, today) {
+  const scored = (people || []).map((p) => {
+    const interval = CADENCES[p.cadence];
+    if (!interval) throw new Error('Unknown cadence "' + p.cadence + '" for ' + p.name +
+      ". Use one of: " + Object.keys(CADENCES).join(", ") + ".");
+    if (!p.lastContacted) return { ...p, status: "new", overdueBy: 0, _sort: Infinity };
+    const since = daysBetween(p.lastContacted, today);
+    const overdueBy = Math.max(0, since - interval);
+    return { ...p, status: overdueBy > 0 ? "overdue" : "ok", overdueBy, _sort: since - interval };
+  });
+  scored.sort((a, b) => b._sort - a._sort);
+  return scored.map(({ _sort, ...rest }) => rest);
+}
+// --->8--- keepintouch core
+
+const KEY = "keepintouch.people.v1";
+const $ = (id) => document.getElementById(id);
+const todayISO = () => new Date().toISOString().slice(0, 10);
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
+const save = (p) => localStorage.setItem(KEY, JSON.stringify(p));
+
+function render() {
+  const people = load();
+  const due = dueContacts(people, todayISO());
+  const list = $("list");
+  list.innerHTML = "";
+  if (!due.length) { list.innerHTML = "<li class='meta'>No one yet. Add the people you keep losing touch with.</li>"; return; }
+  for (const p of due) {
+    const li = document.createElement("li");
+    const tag = p.status === "new" ? "<span class='tag new'>new</span>"
+      : p.status === "overdue" ? "<span class='tag overdue'>" + p.overdueBy + "d overdue</span>"
+      : "<span class='tag ok'>ok</span>";
+    li.innerHTML = "<span class='who'><b>" + p.name + "</b> " + tag +
+      "<div class='meta'>every " + p.cadence +
+      (p.lastContacted ? " · last " + p.lastContacted : " · never talked") + "</div></span>";
+    const done = document.createElement("button");
+    done.className = "small"; done.textContent = "Talked today";
+    done.onclick = () => { const all = load();
+      const t = all.find((x) => x.name === p.name && x.cadence === p.cadence);
+      if (t) { t.lastContacted = todayISO(); save(all); render(); } };
+    const del = document.createElement("button");
+    del.className = "small"; del.textContent = "×"; del.title = "remove";
+    del.onclick = () => { save(load().filter((x) => !(x.name === p.name && x.cadence === p.cadence))); render(); };
+    li.append(done, del);
+    list.append(li);
+  }
+}
+
+$("add").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = $("name").value.trim();
+  if (!name) return;
+  const people = load();
+  people.push({ name, cadence: $("cadence").value, lastContacted: $("last").value || undefined });
+  save(people);
+  $("name").value = ""; $("last").value = "";
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

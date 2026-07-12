@@ -1,0 +1,7 @@
+{
+  "name": "ai-for-real-life-keep-in-touch",
+  "version": "1.0.0",
+  "description": "Offline, no-tracking keep-in-touch tool: people on a cadence.",
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}
