@@ -2,7 +2,7 @@
 
 A menu, not a checklist. Steal what fits this season of your life and ignore the rest. Each is meant to be shrunk until it is easy, then run on the noted rhythm. Add **one at a time** (see [Start With One System](start-with-one.md)).
 
-> Inspired by Ben Meer's *Year of Systems*, reorganized around my own priorities — with Relationships moved to the front, because it is the area that quietly compounds the most and gets neglected the most.
+> Ordered around one priority: Relationships sit at the front, because it is the area that quietly compounds the most and gets neglected the most.
 
 ## Relationships (start here)
 | System | What it is | Rhythm |

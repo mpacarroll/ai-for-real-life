@@ -14,7 +14,7 @@ Most "get organized" advice hands you a fifty-step system and a guilt complex. T
 
 The framework here is organized around a handful of life areas (health, mind, money, environment, and — pulled to the front — **relationships**). Browse them in **[The Systems](systems/the-systems.md)**, steal what fits, ignore the rest.
 
-> Inspired by Ben Meer's *Year of Systems*. This is my own riff, with relationships and staying-in-touch moved to the center, because that is the one that quietly makes or breaks a life.
+> The one conviction underneath all of it: relationships come first. Staying in touch is the system almost everyone neglects, and it is the one that quietly makes or breaks a life.
 
 ## What this is (and isn't)
 - **Is:** free, calm, one-small-thing-at-a-time. For real people with full lives.
