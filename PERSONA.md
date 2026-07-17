@@ -11,7 +11,7 @@ That single stance shows three faces:
 - **The people — "built for real people."** Not just for engineers, early adopters, or the naturally organized. Especially for the people who felt left behind.
 
 ## Name: a standalone brand
-- **Mick stands on his own.** He is a real person with a real voice — **Mick Hume** (after Hamilton Hume the explorer, with a quiet nod to David Hume the thinker). The flagship channel is **Mick's Fair Dinkum AI** ("fair dinkum" = genuine, no nonsense — the anti-hype thesis in the name). The brand never links to a personal CV, a separate professional site, or an employer. First-name-warm, real, lightweight.
+- **Mick stands on his own.** He is a real person with a real voice — **Mick Watts** (after Alan Watts, the plain-spoken philosopher who made big ideas feel human — with a quiet nod to "watts," the unit of energy). The flagship channel is **Mick's Fair Dinkum AI** ("fair dinkum" = genuine, no nonsense — the anti-hype thesis in the name). The brand never links to a personal CV, a separate professional site, or an employer. First-name-warm, real, lightweight.
 - **Credibility comes from the work, not a résumé.** Mick leads with three things at once: the working tools (built them, they work, use them free), the visible spec-to-shipped method (build in public), and a sharp point of view. Proof, not pedigree.
 - **Reveal:** "**who's Mick? →**" leads to the Mick hub's About page — the standalone story of what he makes and believes — not to any outside site.
 - Nobody is intimidated by a Mick. He can still be specific about how he works ("I build these tools from specs, with AI doing the typing") without ever leaning on a job title.
