@@ -30,7 +30,7 @@ Browse them all in **[The Skills](skills/README.md)**, steal what fits, ignore t
 - **Isn't:** a second-brain to maintain, a subscription, or a promise that a system will fix you. Add one skill. See if life gets a little easier.
 
 ## Who's Mick
-I'm Mick. I build simple things that work and write about doing more with less — the tool in this repo is one of them. Warm, practical, on your side, nothing to prove to you. [More about Mick →](https://mpacarroll.github.io/mick/#about)
+I'm Mick. I build simple things that work and write about doing more with less — the tool in this repo is one of them. Warm, practical, on your side, nothing to prove to you. [More about Mick →](https://mpacarroll.github.io/ai-mick/#about)
 
 ## License
 MIT — see [LICENSE](LICENSE).
