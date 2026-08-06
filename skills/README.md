@@ -21,6 +21,7 @@ The one that compounds the most and gets neglected the most, so it goes first.
 | Skill | What it is |
 |---|---|
 | **[Autopay the safe stuff](autopay.md)** | The predictable bills automated once, so due dates stop being a worry. |
+| **[Open loops](open-loops.md)** | Everything you're waiting on someone else for, written down with a date. |
 | Automated savings *(soon)* | A small transfer that happens without you. |
 | Subscription sweep *(soon)* | Twice a year, cancel what you forgot you pay for. |
 | Important docs vault *(soon)* | One secure home for the documents future-you will panic looking for. |
