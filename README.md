@@ -32,5 +32,7 @@ Browse them all in **[The Skills](skills/README.md)**, steal what fits, ignore t
 ## Who's Mick
 I'm Mick. I build simple things that work and write about doing more with less — the tool in this repo is one of them. Warm, practical, on your side, nothing to prove to you. [More about Mick →](https://mpacarroll.github.io/ai-mick/#about)
 
+Not affiliated with any employer.
+
 ## License
 MIT — see [LICENSE](LICENSE).
