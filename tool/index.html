@@ -3,85 +3,180 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Keep in Touch — Life Systems</title>
+<title>Keep in Touch: Life Systems</title>
 <link rel="canonical" href="https://mpacarroll.github.io/ai-for-real-life/tool/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mick's Fair Dinkum AI">
-<meta property="og:title" content="Keep in Touch — Life Systems">
+<meta property="og:title" content="Keep in Touch: Life Systems">
 <meta property="og:description" content="">
 <meta property="og:url" content="https://mpacarroll.github.io/ai-for-real-life/tool/">
 <meta property="og:image" content="https://mpacarroll.github.io/ai-for-real-life/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Keep in Touch — Life Systems">
+<meta name="twitter:title" content="Keep in Touch: Life Systems">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://mpacarroll.github.io/ai-for-real-life/assets/og-image.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Keep in Touch \u2014 Life Systems", "description": "", "url": "https://mpacarroll.github.io/ai-for-real-life/tool/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Keep in Touch: Life Systems", "description": "", "url": "https://mpacarroll.github.io/ai-for-real-life/tool/"}</script>
 
 <style>
-  :root { color-scheme: light dark; }
-  * { box-sizing: border-box; }
-  body { font: 17px/1.5 system-ui, sans-serif; max-width: 680px; margin: 0 auto; padding: 24px; }
-  h1 { font-size: 1.6rem; margin-bottom: 2px; }
-  p.sub { margin-top: 0; opacity: 0.8; }
-  form { display: grid; grid-template-columns: 1fr 130px 150px auto; gap: 8px; align-items: end;
-         margin: 18px 0; }
-  label { display: block; font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
-  input, select, button { font: inherit; padding: 9px; border-radius: 8px;
-    border: 1px solid rgba(128,128,128,0.5); background: transparent; color: inherit; }
-  button { cursor: pointer; font-weight: 600; border-color: transparent; }
-  ul { list-style: none; padding: 0; }
-  li { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px;
-       border: 1px solid rgba(128,128,128,0.25); margin-bottom: 6px; }
-  .who { flex: 1; }
-  .tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px;
-         border-radius: 999px; font-weight: 700; }
-  .overdue { background: #d9534f; color: #fff; }
-  .new { background: #6a7; color: #fff; }
-  .ok { background: rgba(128,128,128,0.25); }
-  .meta { font-size: 0.82rem; opacity: 0.7; }
-  .small { padding: 5px 9px; font-size: 0.85rem; }
-  footer { margin-top: 28px; font-size: 0.9rem; opacity: 0.75; }
-  a { color: inherit; }
-  @media (max-width: 560px){ form { grid-template-columns: 1fr 1fr; } }
+  /* Mick Cairn house look (2026-10-07 mockup, approved 2026-10-08): charcoal and cairn stone carry the page,
+     green is the accent, ochre is the tartan's second thread. Fonts are self-hosted in ../assets/fonts. */
+  @font-face{font-family:"Young Serif";src:url("../assets/fonts/young-serif-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Atkinson Hyperlegible";src:url("../assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Atkinson Hyperlegible";src:url("../assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+  :root{
+    --char:#2b2e33; --ochre:#d08a2c; --green:#1d6b44; --green-deep:#14502f;
+    --stone:#e7e5e0; --sheet:#fbfaf7; --card:#ffffff; --ink:#1f2124; --muted:#5d5f63; --line:#d6d3cc;
+    --on-char:#efe6d2;
+    --display:"Young Serif",Georgia,"Times New Roman",serif;
+    --sans:"Atkinson Hyperlegible",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    color-scheme:light dark;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ochre:#e09a3c; --green:#5bb585; --green-deep:#7cc9a0;
+    --stone:#121315; --sheet:#1b1d20; --card:#202327; --ink:#ecebe7; --muted:#a5a6a8; --line:#33363b;
+  }}
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;font-family:var(--sans);background:var(--sheet);color:var(--ink);line-height:1.55;font-size:17px;-webkit-font-smoothing:antialiased}
+  a{color:var(--green)}
+  :focus-visible{outline:3px solid var(--ochre);outline-offset:2px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
 
-  /* --- funnel CTA (shared across tools) --- */
-  .mc-cta{margin:34px 0 8px;padding:20px 22px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px}
-  .mc-cta h3{font-family:var(--serif);font-size:1.15rem;margin:0 0 4px;color:var(--green)}
-  .mc-cta p{margin:0 0 12px;color:var(--muted);font-size:.94rem}
-  .mc-form{display:flex;gap:8px;flex-wrap:wrap;margin:0}
-  .mc-form input[type=email]{flex:1;min-width:200px;padding:11px;border:1.5px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font:inherit}
-  .mc-form button{background:var(--green);color:#fff;border:none;padding:11px 18px;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
-  .mc-form button:hover{background:var(--green-deep)}
+  /* the cloth: text sits on solid charcoal, the tartan is a selvedge band with nothing on it */
+  .mc-top{background:var(--char);color:var(--on-char)}
+  .mc-top::after{content:"";display:block;height:26px;background-color:var(--char);border-top:2px solid var(--ochre);
+    background-image:
+      repeating-linear-gradient(90deg,rgba(0,0,0,.32) 0 14px,transparent 14px 40px),
+      repeating-linear-gradient(0deg,rgba(0,0,0,.32) 0 14px,transparent 14px 40px),
+      repeating-linear-gradient(90deg,transparent 0 24px,rgba(208,138,44,.8) 24px 28px,transparent 28px 40px),
+      repeating-linear-gradient(0deg,transparent 0 24px,rgba(208,138,44,.8) 24px 28px,transparent 28px 40px),
+      repeating-linear-gradient(90deg,transparent 0 33px,rgba(46,140,92,.9) 33px 35px,transparent 35px 40px)}
+  .mc-bar{display:flex;align-items:center;gap:14px;min-height:64px}
+  .mc-mark{display:flex;align-items:center;gap:10px;color:var(--on-char);text-decoration:none;margin-right:auto}
+  .mc-mark svg{flex:none}
+  .mc-mark b{display:block;font-family:var(--display);font-weight:400;font-size:1.25rem;line-height:1.1}
+  .mc-mark small{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+  .mc-all{color:var(--on-char);text-decoration:none;font-size:.92rem;opacity:.9}
+  .mc-all:hover{opacity:1;text-decoration:underline}
+
+  header.intro{padding:34px 0 4px}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,4.4vw,2.7rem);line-height:1.08;margin:0 0 .25em;color:var(--ink);text-wrap:balance}
+  h3{font-family:var(--display);font-weight:400}
+  .lede{color:var(--muted);max-width:64ch;margin:0}
+  .hint{font-weight:400;color:var(--muted);font-size:.86rem}
+
+  .tabs{display:flex;gap:2px;flex-wrap:wrap;margin:22px 0 0;border-bottom:1px solid var(--line)}
+  .tab{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;color:var(--muted);padding:10px 14px;font:inherit;font-weight:700;font-size:.94rem;cursor:pointer}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--green)}
+
+  /* a panel is the form, with its result beside it on wide screens and above it on a phone */
+  .panel{display:none;padding:20px 0 8px}
+  .panel.on{display:flex;flex-direction:column}
+  .panel>.out{order:-1;margin:0 0 18px}
+  .panel>.ex{order:-2;margin-bottom:12px}
+  .panel .btn{align-self:flex-start;justify-self:start}
+  @media (max-width:480px){.tab{padding:10px 9px;font-size:.88rem}}
+  @media (min-width:900px){
+    .panel.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);column-gap:36px;align-content:start}
+    .panel.on>*{grid-column:1}
+    .panel.on>.out{grid-column:2;grid-row:1 / span 40;margin:0;align-self:start}
+  }
+  .ex{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin:0 0 4px}
+  .ex .tag,.tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+  .ex .tag{background:color-mix(in srgb,var(--green) 14%,transparent);padding:3px 7px;border-radius:3px}
+  .ex button{background:none;border:0;padding:0;font:inherit;color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--green);text-underline-offset:3px;cursor:pointer}
+
+  label{display:block;font-weight:700;margin:14px 0 5px;font-size:.95rem}
+  input,textarea,select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--stone);color:var(--ink);font:inherit}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+  textarea{min-height:84px;resize:vertical}
+  .btn{display:inline-block;background:var(--char);color:var(--on-char);border:0;border-bottom:3px solid var(--green);padding:12px 20px;border-radius:6px;font:inherit;font-weight:700;cursor:pointer;margin-top:18px;text-decoration:none}
+  .btn:hover{background:#1c1e22}
+  @media (prefers-color-scheme:dark){.btn{background:#3a3e44}.btn:hover{background:#464a51}}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-bottom-width:3px}
+
+  .out{display:none;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--green);border-radius:8px;padding:18px 20px;box-shadow:0 14px 34px -24px rgba(20,20,22,.5);min-width:0}
+  .out.on{display:block}
+  .out h3{font-size:1.25rem;margin:.1em 0 .5em}
+  pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--stone);border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:var(--mono);font-size:.84rem;margin:0 0 10px}
+  .copy{background:var(--ochre);color:#1d1305;border:0;padding:9px 15px;border-radius:6px;font:inherit;font-weight:700;cursor:pointer}
+  ul.check{padding-left:0;list-style:none;margin:.4em 0 0}
+  ul.check li{padding:6px 0 6px 26px;position:relative}
+  ul.check li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+
+  /* funnel CTA, shared across tools */
+  .mc-cta{margin:40px 0 8px;padding:24px 0 0;border-top:1px solid var(--line)}
+  .mc-cta h3{font-size:1.25rem;margin:0 0 4px}
+  .mc-cta p{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+  .mc-form{display:flex;gap:8px;flex-wrap:wrap;margin:0;max-width:520px}
+  .mc-form input[type=email]{flex:1;min-width:200px}
+  .mc-form button{background:var(--char);color:var(--on-char);border:0;border-bottom:3px solid var(--green);padding:10px 18px;border-radius:6px;font:inherit;font-weight:700;cursor:pointer}
+  @media (prefers-color-scheme:dark){.mc-form button{background:#3a3e44}}
   .mc-hp{position:absolute;left:-9999px;width:1px;height:1px}
-  .mc-msg{width:100%;margin:8px 0 0;font-size:.9rem;font-weight:600;color:var(--green)}
-  .mc-more{margin:12px 0 0;font-size:.9rem}
-  .mc-more a{color:var(--green);font-weight:600}
+  .mc-msg{width:100%;margin:8px 0 0;font-size:.9rem;font-weight:700;color:var(--green)}
+  .mc-more{margin:12px 0 0;font-size:.95rem}
+  .mc-more a{font-weight:700}
+  footer{color:var(--muted);font-size:.86rem;padding:28px 0 56px}
+
+  :root{--due:#b4442c}
+  @media (prefers-color-scheme:dark){:root{--due:#e8765c}}
+  #add{display:grid;gap:0}
+  #list{list-style:none;padding:0;margin:0}
+  #list li{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+  #list li:last-child{border-bottom:0}
+  #list li.empty{color:var(--muted)}
+  .who{flex:1;min-width:0}
+  .who b{font-family:var(--display);font-weight:400;font-size:1.08rem}
+  .st{font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:3px;font-weight:700;margin-left:6px;white-space:nowrap}
+  .st.overdue{background:var(--due);color:#fff}
+  .st.new{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+  .st.ok{background:var(--stone);color:var(--muted)}
+  .meta{font-size:.84rem;color:var(--muted)}
+  .small{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:5px 10px;font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap}
+  .out .ex{margin:0 0 6px}
+
 </style>
 </head>
 <body>
-  <h1>Keep in Touch</h1>
-  <p class="sub">The people who matter, on a rhythm. This tool tells you who you are overdue to
-     reach out to. Everything stays on your device — nothing is sent anywhere.</p>
-
-  <form id="add">
-    <div><label for="name">Name</label><input id="name" required placeholder="e.g. Alex"></div>
-    <div><label for="cadence">Every</label>
-      <select id="cadence">
-        <option value="weekly">week</option>
-        <option value="biweekly">2 weeks</option>
-        <option value="monthly" selected>month</option>
-        <option value="quarterly">3 months</option>
-        <option value="semiannually">6 months</option>
-        <option value="annually">year</option>
-      </select>
+<header class="mc-top"><div class="wrap mc-bar">
+  <a class="mc-mark" href="https://mpacarroll.github.io/ai-mick/" aria-label="Mick Cairn, all free tools">
+    <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="26" rx="12" ry="4.2" fill="#d08a2c"/><ellipse cx="16" cy="18.6" rx="8.6" ry="3.8" fill="#cfc8b8"/><ellipse cx="15.4" cy="12" rx="5.6" ry="3.1" fill="#d08a2c"/><ellipse cx="16.2" cy="6.6" rx="3.2" ry="2.3" fill="#2e8c5c"/></svg>
+    <span><b>Mick Cairn</b><small>Free tools</small></span>
+  </a>
+  <a class="mc-all" href="https://mpacarroll.github.io/ai-mick/#tools">All tools</a>
+</div></header>
+<div class="wrap">
+  <header class="intro">
+    <h1>Keep in Touch</h1>
+    <p class="lede">The people who matter, on a rhythm. This tool tells you who you are overdue to
+       reach out to. Everything stays on your device, and nothing is sent anywhere.</p>
+  </header>
+  <section class="panel on" id="kit">
+    <form id="add">
+      <div><label for="name">Name</label><input id="name" required placeholder="e.g. Alex"></div>
+      <div><label for="cadence">Every</label>
+        <select id="cadence">
+          <option value="weekly">week</option>
+          <option value="biweekly">2 weeks</option>
+          <option value="monthly" selected>month</option>
+          <option value="quarterly">3 months</option>
+          <option value="semiannually">6 months</option>
+          <option value="annually">year</option>
+        </select>
+      </div>
+      <div><label for="last">Last talked <span class="hint">(optional)</span></label><input id="last" type="date"></div>
+      <button id="addBtn" class="btn">Add</button>
+    </form>
+    <div class="out on" id="due">
+      <h3>Who to reach out to</h3>
+      <p class="ex" id="exnote" hidden><span class="tag">Example</span>Add your first person and these examples go away.</p>
+      <ul id="list" aria-live="polite"></ul>
     </div>
-    <div><label for="last">Last talked (optional)</label><input id="last" type="date"></div>
-    <button id="addBtn">Add</button>
-  </form>
-
-  <ul id="list" aria-live="polite"></ul>
+  </section>
 
 
   <section class="mc-cta">
@@ -98,11 +193,12 @@
   <footer>
     New here? Read <a href="../skills/start-with-one.md">Start With One Skill</a>, or the
     <a href="../skills/keep-in-touch.md">Keep in Touch skill</a>. Made by Mick.
-    <a href="../README.md">Who's Mick? →</a>
+    <a href="../README.md">Who's Mick?</a>
   </footer>
+</div>
 
 <script>
-// mirror of tool/keepintouch.js — change both together
+// mirror of tool/keepintouch.js; change both together
 // ---8<--- keepintouch core
 const CADENCES = {
   weekly: 7, biweekly: 14, monthly: 30, quarterly: 91, semiannually: 182, annually: 365,
@@ -131,33 +227,48 @@ const todayISO = () => new Date().toISOString().slice(0, 10);
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
 const save = (p) => localStorage.setItem(KEY, JSON.stringify(p));
 
+const EVERY = { weekly: "week", biweekly: "2 weeks", monthly: "month", quarterly: "3 months",
+  semiannually: "6 months", annually: "year" };
+const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+// Shown until the first real person is added, so the first view shows what the tool does.
+const examplePeople = () => [
+  { name: "Mom", cadence: "weekly", lastContacted: daysAgo(12) },
+  { name: "Sam, college roommate", cadence: "quarterly", lastContacted: daysAgo(130) },
+  { name: "Priya from the old job", cadence: "monthly" },
+  { name: "Uncle Joe", cadence: "monthly", lastContacted: daysAgo(9) },
+];
 function render() {
-  const people = load();
-  const due = dueContacts(people, todayISO());
+  const saved = load();
+  const example = !saved.length;
+  const due = dueContacts(example ? examplePeople() : saved, todayISO());
   const list = $("list");
+  $("exnote").hidden = !example;
   list.innerHTML = "";
-  if (!due.length) { list.innerHTML = "<li class='meta'>No one yet. Add the people you keep losing touch with.</li>"; return; }
   for (const p of due) {
     const li = document.createElement("li");
-    const tag = p.status === "new" ? "<span class='tag new'>new</span>"
-      : p.status === "overdue" ? "<span class='tag overdue'>" + p.overdueBy + "d overdue</span>"
-      : "<span class='tag ok'>ok</span>";
-    li.innerHTML = "<span class='who'><b>" + p.name + "</b> " + tag +
-      "<div class='meta'>every " + p.cadence +
-      (p.lastContacted ? " · last " + p.lastContacted : " · never talked") + "</div></span>";
-    const done = document.createElement("button");
-    done.className = "small"; done.textContent = "Talked today";
-    done.onclick = () => { const all = load();
-      const t = all.find((x) => x.name === p.name && x.cadence === p.cadence);
-      if (t) { t.lastContacted = todayISO(); save(all); render(); } };
-    const del = document.createElement("button");
-    del.className = "small"; del.textContent = "×"; del.title = "remove";
-    del.onclick = () => { save(load().filter((x) => !(x.name === p.name && x.cadence === p.cadence))); render(); };
-    li.append(done, del);
+    const tag = p.status === "new" ? "<span class='st new'>new</span>"
+      : p.status === "overdue" ? "<span class='st overdue'>" + p.overdueBy + "d overdue</span>"
+      : "<span class='st ok'>ok</span>";
+    const who = document.createElement("span");
+    who.className = "who";
+    who.innerHTML = "<b></b> " + tag + "<div class='meta'>every " + (EVERY[p.cadence] || p.cadence) +
+      (p.lastContacted ? " · last " + p.lastContacted : " · never talked") + "</div>";
+    who.querySelector("b").textContent = p.name;
+    li.append(who);
+    if (!example) {
+      const done = document.createElement("button");
+      done.className = "small"; done.textContent = "Talked today";
+      done.onclick = () => { const all = load();
+        const t = all.find((x) => x.name === p.name && x.cadence === p.cadence);
+        if (t) { t.lastContacted = todayISO(); save(all); render(); } };
+      const del = document.createElement("button");
+      del.className = "small"; del.textContent = "×"; del.title = "Remove"; del.setAttribute("aria-label", "Remove " + p.name);
+      del.onclick = () => { save(load().filter((x) => !(x.name === p.name && x.cadence === p.cadence))); render(); };
+      li.append(done, del);
+    }
     list.append(li);
   }
 }
-
 $("add").addEventListener("submit", (e) => {
   e.preventDefault();
   const name = $("name").value.trim();
@@ -180,13 +291,13 @@ render();
     var msg=f.querySelector('.mc-msg'), btn=f.querySelector('button');
     var email=(f.email.value||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg.textContent='Please enter a valid email.'; return; }
-    if(f.website.value){ msg.textContent='Thanks — you\u2019re on the list.'; return; }
+    if(f.website.value){ msg.textContent='Thanks, you\u2019re on the list.'; return; }
     btn.disabled=true; msg.textContent='Adding you\u2026';
     fetch('https://join.micksfairdinkumai.com/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({email:email,source:f.dataset.source})})
       .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
       .then(function(d){
-        if(d && d.ok){ msg.textContent='Thanks \u2014 you\u2019re on the list.'; f.email.value=''; }
+        if(d && d.ok){ msg.textContent='Thanks, you\u2019re on the list.'; f.email.value=''; }
         else { msg.textContent=(d && d.error) ? d.error : 'Something went wrong. Try again.'; btn.disabled=false; }
       })
       .catch(function(){ msg.textContent='Could not reach the server. Try again shortly.'; btn.disabled=false; });
