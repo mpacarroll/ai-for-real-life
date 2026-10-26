@@ -388,7 +388,11 @@ def pick_people(inputs, state, today, cfg, report):
             continue
         last = kit.get(name, {}).get("last_surfaced")
         picked_today = last == today.isoformat()
-        if last and not picked_today and (today - parse_date(last)).days < cfg["kit_cooldown_days"]:
+        bday_close = False
+        if p.get("birthday"):
+            bd = parse_date(p["birthday"]).replace(year=today.year)
+            bday_close = 0 <= (bd - today).days <= 1
+        if last and not picked_today and not bday_close and (today - parse_date(last)).days < cfg["kit_cooldown_days"]:
             report["people_skipped"].append({"name": name, "why": f"surfaced {last}"})
             continue
         overdue = (today - parse_date(p["last_contacted"])).days / float(p["interval_days"])

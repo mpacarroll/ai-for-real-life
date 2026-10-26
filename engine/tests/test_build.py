@@ -168,6 +168,12 @@ class PeopleTests(unittest.TestCase):
         again = [p[0] for p in bb.pick_people({"people": people}, state, TODAY, CFG, report())]
         self.assertEqual(first, again)
 
+    def test_birthday_beats_the_cooldown_on_the_day(self):
+        people = [self.person("B", "2026-10-01", 365, birthday="2000-10-29")]
+        state = {"kit": {"B": {"last_surfaced": "2026-10-27"}}}
+        picks = bb.pick_people({"people": people}, state, date(2026, 10, 29), CFG, report())
+        self.assertEqual([p[0] for p in picks], ["B"])
+
     def test_birthday_leads(self):
         people = [self.person("A", "2026-06-01", 7), self.person("B", "2026-10-01", 365, birthday="2000-10-28")]
         picks = bb.pick_people({"people": people}, {"kit": {}}, TODAY, CFG, report())
