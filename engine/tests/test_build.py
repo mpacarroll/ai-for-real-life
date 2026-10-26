@@ -170,7 +170,7 @@ class PeopleTests(unittest.TestCase):
 
 class RenderTests(unittest.TestCase):
     def test_full_render_from_sample_input(self):
-        inp = json.load(open(os.path.join(os.path.dirname(HERE), "inputs", "2026-10-26.json")))
+        inp = json.load(open(os.path.join(HERE, "fixture-input.json")))
         state = {"items": {}, "kit": {}}
         r = report()
         page = bb.render(inp, state, CFG, TODAY, r)
@@ -178,7 +178,8 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(page.count('class="act"'), 3)
         self.assertNotIn("{{", page)
         self.assertEqual(page.count("<div"), page.count("</div>"))
-        self.assertIn("Pork claim", page)
+        self.assertIn("Claim form", page)
+        self.assertIn("Laundry, then the race at 4", page)
         self.assertLessEqual(len(r["rendered"]), CFG["max_open_loops"])
 
 

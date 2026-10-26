@@ -1,7 +1,8 @@
 # Gather: the beat checklist
 
 Every morning beat and evening close follows this list in order and fills one
-file, `engine/inputs/<date>.json`, where `<date>` is the day the brief is for.
+file, `$ENGINE_DATA_DIR/inputs/<date>.json` (the private personal-hq checkout, never
+this public repo), where `<date>` is the day the brief is for.
 Then it runs the builder, looks at the screenshot, and publishes. Nothing goes
 on the page that is not in the input file. Nothing in the input file goes on
 the page without a basis tag.
@@ -66,14 +67,14 @@ you expect it to pick; a plain template covers the rest.
 ## 7. Build, look, publish
 
 ```
-python3 engine/build_brief.py engine/inputs/<date>.json --out <scratch>
+ENGINE_DATA_DIR=<personal-hq>/engine python3 engine/build_brief.py $ENGINE_DATA_DIR/inputs/<date>.json --out <scratch>
 node engine/shot.js <scratch>/brief-MMDD.html
 ```
 
 Read the png. Then publish `brief-MMDD.html` with the Artifact tool at the same
 file path the evening close used, so the URL holds. Update the Engine Index.
-Commit `engine/inputs/<date>.json` and `engine/state.json` so the next session
-starts from the ledger, not from memory.
+Commit `inputs/<date>.json` and `state.json` in personal-hq so the next session
+starts from the ledger, not from memory. Nothing personal is committed here.
 
 ## 8. The recap line
 

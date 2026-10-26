@@ -83,8 +83,8 @@ file and the durable ledger and writes the HTML from a template every run.
 | `build_brief.py` | the renderer |
 | `template.html` | the page shell, tokens on `:root` |
 | `config.json` | caps, thresholds, optional titles |
-| `state.json` | the ledger, committed after every beat |
-| `inputs/<date>.json` | the facts for one day, committed after every beat |
+| `$ENGINE_DATA_DIR/state.json` | the ledger, in the private repo, committed after every beat |
+| `$ENGINE_DATA_DIR/inputs/<date>.json` | the facts for one day, private, committed after every beat |
 | `gather.md` | the checklist each beat follows to write the input |
 | `shot.js` | screenshot for the render check |
 | `tests/` | `python3 -m unittest discover engine/tests` |
@@ -93,8 +93,17 @@ file and the durable ledger and writes the HTML from a template every run.
 ## Running it
 
 ```
-python3 engine/build_brief.py engine/inputs/2026-10-26.json --out /tmp/eng
+export ENGINE_DATA_DIR=/path/to/personal-hq/engine
+python3 engine/build_brief.py $ENGINE_DATA_DIR/inputs/2026-10-26.json --out /tmp/eng
 node engine/shot.js /tmp/eng/brief-1026.html
 ```
 
-`--dry-run` builds without touching `state.json`.
+`--dry-run` builds without touching the ledger.
+
+## Where the data lives
+
+This repo is public. The code, template, config and tests are here. The
+ledger, the dated inputs, the reports and the built pages carry names,
+appointments and account references, so they live in `personal-hq/engine/`
+(private) and are ignored here by `engine/.gitignore`. The builder reads
+`ENGINE_DATA_DIR` and defaults to a sibling `personal-hq` checkout.

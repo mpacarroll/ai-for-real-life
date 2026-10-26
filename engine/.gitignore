@@ -1,0 +1,7 @@
+# Personal data never lives in this public repo. The ledger and the dated
+# input files live in ENGINE_DATA_DIR (a private repo); see README.md.
+state.json
+inputs/
+*.png
+report-*.json
+brief-*.html

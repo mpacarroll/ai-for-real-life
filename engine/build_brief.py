@@ -2,18 +2,19 @@
 """Build the daily brief from a dated input file and the durable item ledger.
 
 Usage:
-    python3 engine/build_brief.py engine/inputs/2026-10-26.json [--out DIR] [--dry-run]
+    python3 engine/build_brief.py $ENGINE_DATA_DIR/inputs/2026-10-26.json [--out DIR] [--dry-run]
 
 Reads:
-    engine/inputs/<date>.json   the facts gathered this beat (see gather.md)
-    engine/state.json           the item ledger that survives between beats
+    $ENGINE_DATA_DIR/inputs/<date>.json   the facts gathered this beat (see gather.md)
+    $ENGINE_DATA_DIR/state.json           the item ledger that survives between beats
+    (ENGINE_DATA_DIR is a private checkout; it defaults to ../personal-hq/engine)
     engine/template.html        the page shell
     engine/config.json          thresholds, optional titles, people rules
 
 Writes:
     <out>/brief-MMDD.html       the page to publish
     <out>/report-MMDD.json      what was rendered, what was dropped and why
-    engine/state.json           updated ledger (unless --dry-run)
+    $ENGINE_DATA_DIR/state.json           updated ledger (unless --dry-run)
 
 The renderer is deliberately strict. Nothing reaches the page unless it is in
 the input file for this date, carries a basis tag, and is not closed, parked
@@ -33,7 +34,10 @@ import sys
 from datetime import date, datetime, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STATE_PATH = os.path.join(HERE, "state.json")
+# Personal data (the ledger and the dated inputs) lives outside this public
+# repo, in a private checkout named by ENGINE_DATA_DIR. The code stays here.
+DATA_DIR = os.environ.get("ENGINE_DATA_DIR", os.path.join(HERE, "..", "..", "personal-hq", "engine"))
+STATE_PATH = os.path.join(DATA_DIR, "state.json")
 CONFIG_PATH = os.path.join(HERE, "config.json")
 TEMPLATE_PATH = os.path.join(HERE, "template.html")
 FONT_PATH = os.path.join(HERE, "assets", "fraunces-latin-600.woff2")
@@ -537,11 +541,12 @@ def main(argv=None):
     ap.add_argument("input")
     ap.add_argument("--out", default=None, help="directory for the html and report")
     ap.add_argument("--dry-run", action="store_true", help="do not write state.json")
+    ap.add_argument("--state", default=STATE_PATH, help="ledger path (default $ENGINE_DATA_DIR/state.json)")
     args = ap.parse_args(argv)
 
     inputs = load_json(args.input)
     cfg = load_json(CONFIG_PATH)
-    state = load_json(STATE_PATH, default={"items": {}, "kit": {}})
+    state = load_json(args.state, default={"items": {}, "kit": {}})
     today = parse_date(inputs["date"])
 
     report = {
@@ -566,7 +571,8 @@ def main(argv=None):
     with open(os.path.join(out, f"report-{today:%m%d}.json"), "w") as f:
         json.dump(report, f, indent=2)
     if not args.dry_run:
-        save_json(STATE_PATH, state)
+        os.makedirs(os.path.dirname(os.path.abspath(args.state)), exist_ok=True)
+        save_json(args.state, state)
     print(html_path)
     print(f"rendered {len(report['rendered'])} loops, parked {len(report['parked'])}, dropped {len(report['dropped'])}, people {report['people']}")
     if report["stale"]:
