@@ -87,6 +87,8 @@ file and the durable ledger and writes the HTML from a template every run.
 | `$ENGINE_DATA_DIR/inputs/<date>.json` | the facts for one day, private, committed after every beat |
 | `gather.md` | the checklist each beat follows to write the input |
 | `shot.js` | screenshot for the render check |
+| `calendar_import.py` | raw calendar output to input rows |
+| `carry.py` | start tomorrow's input from today's |
 | `tests/` | `python3 -m unittest discover engine/tests` |
 | `assets/` | the one font the headline uses |
 

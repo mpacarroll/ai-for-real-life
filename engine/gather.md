@@ -1,5 +1,9 @@
 # Gather: the beat checklist
 
+The evening close starts tomorrow's file with
+`python3 engine/carry.py $ENGINE_DATA_DIR/inputs/<today>.json`, which keeps
+candidates and people and clears the day-specific fields.
+
 Every morning beat and evening close follows this list in order and fills one
 file, `$ENGINE_DATA_DIR/inputs/<date>.json` (the private personal-hq checkout, never
 this public repo), where `<date>` is the day the brief is for.
@@ -19,6 +23,12 @@ only the blocks he described. If the evening close has not asked him for
 tomorrow's plan yet, ask: "What does tomorrow actually look like?"
 
 ## 2. Calendar (one call per calendar)
+
+Save each list_events result to a file and run
+`python3 engine/calendar_import.py primary.json service.json --date <date>`;
+it reads the `Type:` line and transparency for you. Paste its output into
+`calendar`, then add `location_short` where it matters.
+
 
 Primary and Service for the day, 00:00 to 24:00 New York. Each event becomes
 one row: `start`, `end`, `title`, `calendar`, `type` (the `Type:` line in the
