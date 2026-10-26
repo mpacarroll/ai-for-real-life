@@ -203,7 +203,8 @@ def rank(entry, today, cfg):
     elif basis.startswith("unclear"):
         score += 30
     if entry.get("kind") == "security":
-        score += 50
+        # An account someone else is trying to get into outranks any clock.
+        score += 200
     if entry.get("owner") == "mick" and d is None:
         score -= 20
     # Repetition penalty: a line the reader has already seen for days is noise
@@ -247,10 +248,10 @@ def select_loops(state, seen_ids, today, cfg, report):
             else:
                 report["parked"].append(iid)
                 continue
-        pool.append((rank(e, today, cfg), iid))
-    pool.sort(key=lambda x: (-x[0], x[1]))
-    chosen = [iid for _, iid in pool[: cfg["max_open_loops"]]]
-    for _, iid in pool[cfg["max_open_loops"]:]:
+        pool.append((rank(e, today, cfg), e.get("due") or "9999-12-31", iid))
+    pool.sort(key=lambda x: (-x[0], x[1], x[2]))
+    chosen = [iid for _, _, iid in pool[: cfg["max_open_loops"]]]
+    for _, _, iid in pool[cfg["max_open_loops"]:]:
         report["dropped"].append({"id": iid, "why": "below the cap"})
     for iid in chosen:
         e = items[iid]
@@ -307,6 +308,8 @@ def build_acts(events, plan, cfg):
             loc = e.get("location_short")
             if loc and loc.lower() == "remote":
                 parts.append(f"{e['title']} at {fmt_time_short(e['start'])}, remote")
+            elif loc and loc.lower().startswith(("in ", "on ", "at ")):
+                parts.append(f"{e['title']} {loc} at {fmt_time_short(e['start'])}")
             elif loc:
                 parts.append(f"{e['title']} in {loc} at {fmt_time_short(e['start'])}")
             else:
@@ -384,7 +387,8 @@ def pick_people(inputs, state, today, cfg, report):
         if not p.get("interval_days") or not p.get("last_contacted"):
             continue
         last = kit.get(name, {}).get("last_surfaced")
-        if last and (today - parse_date(last)).days < cfg["kit_cooldown_days"]:
+        picked_today = last == today.isoformat()
+        if last and not picked_today and (today - parse_date(last)).days < cfg["kit_cooldown_days"]:
             report["people_skipped"].append({"name": name, "why": f"surfaced {last}"})
             continue
         overdue = (today - parse_date(p["last_contacted"])).days / float(p["interval_days"])
@@ -396,7 +400,15 @@ def pick_people(inputs, state, today, cfg, report):
                 bday_soon = True
         if overdue < 1 and not bday_soon:
             continue
-        cands.append((bday_soon, min(overdue, 12.0), name, p))
+        cands.append((bday_soon, min(overdue, 12.0), name, p, picked_today))
+    # A rebuild later the same day keeps the names already on the page.
+    same_day = [c[:4] for c in cands if c[4]]
+    if same_day:
+        out = []
+        for bday_soon, overdue, name, p in same_day[: cfg["kit_max"]]:
+            out.append((name, p, bday_soon))
+        return out
+    cands = [c[:4] for c in cands]
     # Birthdays first, then a date-seeded pick among the most overdue so the
     # page rotates instead of showing the same two names for a fortnight.
     cands.sort(key=lambda c: (not c[0], -c[1], c[2]))

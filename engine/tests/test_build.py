@@ -161,6 +161,13 @@ class PeopleTests(unittest.TestCase):
         day2 = [p[0] for p in bb.pick_people({"people": people}, state, date(2026, 10, 27), CFG, report())]
         self.assertFalse(set(day1) & set(day2))
 
+    def test_same_day_rebuild_keeps_the_names(self):
+        people = [self.person(n, "2026-06-01", 7) for n in ("A", "B", "C", "D")]
+        state = {"kit": {}}
+        first = [p[0] for p in bb.pick_people({"people": people}, state, TODAY, CFG, report())]
+        again = [p[0] for p in bb.pick_people({"people": people}, state, TODAY, CFG, report())]
+        self.assertEqual(first, again)
+
     def test_birthday_leads(self):
         people = [self.person("A", "2026-06-01", 7), self.person("B", "2026-10-01", 365, birthday="2000-10-28")]
         picks = bb.pick_people({"people": people}, {"kit": {}}, TODAY, CFG, report())
