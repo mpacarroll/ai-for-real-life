@@ -5,3 +5,4 @@ inputs/
 *.png
 report-*.json
 brief-*.html
+__pycache__/
