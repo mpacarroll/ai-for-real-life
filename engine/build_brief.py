@@ -185,12 +185,10 @@ def rank(entry, today, cfg):
     score = 0
     d = days_until(entry.get("due"), today)
     if d is not None:
-        if d <= 0:
-            score += 120
-        elif d <= 3:
-            score += 100
-        elif d <= 7:
-            score += 80
+        # Inside a week the nearer clock always wins over a better source:
+        # each day closer is worth more than the gap between basis tags.
+        if d <= 7:
+            score += 200 - 20 * max(d, 0)
         elif d <= 14:
             score += 40
     basis = entry.get("basis", "")

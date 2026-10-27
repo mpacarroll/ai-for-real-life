@@ -78,6 +78,13 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(chosen[1], "c7")
         self.assertEqual(len(r["dropped"]), 3)
 
+    def test_nearer_clock_beats_better_source(self):
+        state = {"items": {}}
+        cands = [cand("thu", due="2026-10-29", basis="per Penny"), cand("sat", due="2026-10-31", basis="confirmed: email")]
+        r = report()
+        seen = bb.merge_into_ledger(state, {"candidates": cands}, TODAY, CFG, r)
+        self.assertEqual(bb.select_loops(state, seen, TODAY, CFG, r), ["thu", "sat"])
+
     def test_old_mick_only_item_parks_into_one_line(self):
         state = {"items": {"a": {"status": "open", "surfaced_days": CFG["park_after_days"], "owner": "mick"}}}
         r = report()
