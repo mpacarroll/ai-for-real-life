@@ -175,6 +175,12 @@ class PeopleTests(unittest.TestCase):
         again = [p[0] for p in bb.pick_people({"people": people}, state, TODAY, CFG, report())]
         self.assertEqual(first, again)
 
+    def test_two_picks_are_never_the_same_person(self):
+        people = [self.person(n, "2026-06-01", 7) for n in ("A", "B", "C")]
+        for d in range(1, 31):
+            picks = [p[0] for p in bb.pick_people({"people": people}, {"kit": {}}, date(2026, 11, d), CFG, report())]
+            self.assertEqual(len(picks), len(set(picks)), d)
+
     def test_birthday_beats_the_cooldown_on_the_day(self):
         people = [self.person("B", "2026-10-01", 365, birthday="2000-10-29")]
         state = {"kit": {"B": {"last_surfaced": "2026-10-27"}}}

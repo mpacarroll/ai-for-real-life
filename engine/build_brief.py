@@ -423,7 +423,9 @@ def pick_people(inputs, state, today, cfg, report):
         i = seed % len(top)
         picks.append(top[i])
         if len(picks) < cfg["kit_max"] and len(top) > 1:
-            picks.append(top[(i + 1 + seed // 7) % len(top)])
+            # Step 1..len-1 past i so the second pick is never the first.
+            j = (i + 1 + (seed // 7) % (len(top) - 1)) % len(top)
+            picks.append(top[j])
     picks = picks[: cfg["kit_max"]]
     out = []
     for bday_soon, overdue, name, p in picks:
