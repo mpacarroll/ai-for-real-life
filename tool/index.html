@@ -303,6 +303,15 @@
           <button class="small" id="demo-load" type="button">Load sample people</button>
           <button class="small" id="demo-clear" type="button" hidden>Remove sample people</button>
         </div>
+        <div class="card" id="ics-card">
+          <h3>Add to your calendar</h3>
+          <p class="meta">Download an .ics file and open it with your calendar app. Dates repeat every year. The file holds names and date labels only, never your private notes. Sample people are left out.</p>
+          <div class="acts">
+            <button class="small" id="ics-dates" type="button">Important dates (.ics)</button>
+            <button class="small" id="ics-week" type="button">This week's plan (.ics)</button>
+          </div>
+          <p class="hint">The weekly file includes why each hello showed up, so it can carry the things you plan to ask about.</p>
+        </div>
       </div>
       <div>
         <form class="card" id="import-form">
@@ -325,15 +334,6 @@
             You choose who to add.</p>
           <label for="vcf-file">Contacts file (.vcf)</label><input id="vcf-file" type="file" accept=".vcf,text/vcard,text/x-vcard">
           <div id="vcf-pick" hidden></div>
-        </div>
-        <div class="card" id="ics-card">
-          <h3>Add to your calendar</h3>
-          <p class="meta">Download an .ics file and open it with your calendar app. Dates repeat every year. The file holds names and date labels only, never your private notes. Sample people are left out.</p>
-          <div class="acts">
-            <button class="small" id="ics-dates" type="button">Important dates (.ics)</button>
-            <button class="small" id="ics-week" type="button">This week's plan (.ics)</button>
-          </div>
-          <p class="hint">The weekly file includes why each hello showed up, so it can carry the things you plan to ask about.</p>
         </div>
         <form class="card" id="delete-form">
           <h3>Delete everything</h3>
