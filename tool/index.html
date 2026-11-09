@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Keep in touch with the people who matter, on a rhythm you choose. A private weekly plan with reasons, notes, dates and conversation prep. Stays on your device.">
 <title>Keep in Touch: Life Systems</title>
 <link rel="canonical" href="https://mpacarroll.github.io/ai-for-real-life/tool/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mick's Fair Dinkum AI">
 <meta property="og:title" content="Keep in Touch: Life Systems">
-<meta property="og:description" content="">
+<meta property="og:description" content="Keep in touch with the people who matter, on a rhythm you choose. A private weekly plan with reasons, notes, dates and conversation prep. Stays on your device.">
 <meta property="og:url" content="https://mpacarroll.github.io/ai-for-real-life/tool/">
 <meta property="og:image" content="https://mpacarroll.github.io/ai-for-real-life/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Keep in Touch: Life Systems">
-<meta name="twitter:description" content="">
+<meta name="twitter:description" content="Keep in touch with the people who matter, on a rhythm you choose. A private weekly plan with reasons, notes, dates and conversation prep. Stays on your device.">
 <meta name="twitter:image" content="https://mpacarroll.github.io/ai-for-real-life/assets/og-image.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Keep in Touch: Life Systems", "description": "", "url": "https://mpacarroll.github.io/ai-for-real-life/tool/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Keep in Touch: Life Systems", "description": "Keep in touch with the people who matter, on a rhythm you choose. A private weekly plan with reasons, notes, dates and conversation prep. Stays on your device.", "url": "https://mpacarroll.github.io/ai-for-real-life/tool/"}</script>
 
 <style>
   /* Mick Cairn house look (2026-10-07 mockup, approved 2026-10-08): charcoal and cairn stone carry the page,
@@ -122,23 +123,84 @@
   .mc-more a{font-weight:700}
   footer{color:var(--muted);font-size:.86rem;padding:28px 0 56px}
 
-  :root{--due:#b4442c}
-  @media (prefers-color-scheme:dark){:root{--due:#e8765c}}
-  #add{display:grid;gap:0}
-  #list{list-style:none;padding:0;margin:0}
-  #list li{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
-  #list li:last-child{border-bottom:0}
-  #list li.empty{color:var(--muted)}
-  .who{flex:1;min-width:0}
-  .who b{font-family:var(--display);font-weight:400;font-size:1.08rem}
-  .st{font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:3px;font-weight:700;margin-left:6px;white-space:nowrap}
-  .st.overdue{background:var(--due);color:#fff}
+  /* Keep in Touch planner */
+  :root{--soon:#8a5a12}
+  @media (prefers-color-scheme:dark){:root{--soon:#e9b46a}}
+  h2{font-family:var(--display);font-weight:400;font-size:1.6rem;margin:0}
+  h4{margin:16px 0 6px;font-size:.95rem}
+  .panel-wrap{padding:20px 0 8px}
+  .notice{display:none;position:sticky;top:8px;z-index:5;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0;padding:10px 14px;border-radius:8px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);box-shadow:0 10px 24px -18px rgba(0,0,0,.6)}
+  .notice.on{display:flex}
+  .notice.warn{border-left-color:var(--ochre)}
+  .notice span{flex:1;min-width:200px}
+  .notice .x{margin-left:auto}
+  .toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+  .toolbar label{margin:0;display:flex;align-items:center;gap:8px;font-weight:400;color:var(--muted)}
+  .toolbar select{width:auto}
+  .range{font-weight:700;margin-right:auto}
+  .card,.example-box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin:0 0 16px}
+  .card h3{font-size:1.2rem;margin:0 0 6px}
+  .example-box{border-top:4px solid var(--ochre)}
+  .example-box p{margin:6px 0}
+  .example-box .acts{margin-top:10px}
+  .day{margin:0 0 18px}
+  .day h4{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  .item{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:12px 14px;margin:0 0 10px}
+  .item.quiet{border-left-color:var(--line)}
+  .item-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .item-head b,.who b{font-family:var(--display);font-weight:400;font-size:1.1rem}
+  .why-label{margin:6px 0 0;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  ul.why,ul.plain{margin:4px 0 0;padding-left:18px}
+  ul.why li,ul.plain li{margin:2px 0;font-size:.94rem}
+  ul.why li.r-capacity,ul.why li.r-snooze{color:var(--muted)}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  details.later{margin:10px 0 0}
+  details.later summary{cursor:pointer;font-weight:700;padding:6px 0}
+  .calm{color:var(--muted)}
+  .st{font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:3px;font-weight:700;white-space:nowrap}
+  .st.due{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
   .st.new{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
-  .st.ok{background:var(--stone);color:var(--muted)}
-  .meta{font-size:.84rem;color:var(--muted)}
-  .small{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:5px 10px;font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap}
-  .out .ex{margin:0 0 6px}
-
+  .st.date{background:color-mix(in srgb,var(--ochre) 20%,transparent);color:var(--soon)}
+  .st.ok,.st.paused,.st.notes,.st.sample{background:var(--stone);color:var(--muted)}
+  .st.snoozed{background:var(--stone);color:var(--muted)}
+  .small{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:6px 11px;font:inherit;font-size:.86rem;font-weight:700;cursor:pointer;white-space:nowrap;width:auto}
+  .small.primary{background:var(--char);color:var(--on-char);border-color:var(--char)}
+  @media (prefers-color-scheme:dark){.small.primary{background:#3a3e44;border-color:#3a3e44}}
+  .small.danger{color:var(--ochre)}
+  select.small{padding:6px 8px}
+  #people-list,#dates-list{list-style:none;padding:0;margin:0}
+  #people-list li,#dates-list li{border-bottom:1px solid var(--line)}
+  #people-list li.empty,#dates-list li.empty{color:var(--muted);padding:12px 0;border:0}
+  .person-open{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 4px;font:inherit;color:inherit;cursor:pointer}
+  .person-open:hover{background:var(--stone)}
+  .who{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+  .who .meta{flex-basis:100%}
+  .meta{font-size:.86rem;color:var(--muted)}
+  .people-grid{display:grid;gap:24px}
+  @media (min-width:900px){.people-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}}
+  .custom-days{display:flex;align-items:center;gap:6px;margin-top:8px}
+  .custom-days input{width:110px}
+  .detail-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 16px}
+  .detail-grid{display:grid;gap:0 24px}
+  @media (min-width:900px){.detail-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+  .prep{border-top:4px solid var(--green)}
+  .notes-view{white-space:pre-wrap;margin:0}
+  ul.openers{list-style:none;padding:0;margin:6px 0 0}
+  ul.openers li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:var(--stone);border-radius:6px;margin:0 0 6px}
+  ul.openers li span{flex:1}
+  .date-row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.2fr) auto;gap:6px;margin:0 0 6px}
+  .lbl{font-weight:700;margin:14px 0 5px;font-size:.95rem}
+  .check-row{display:flex;gap:8px;align-items:center;font-weight:400;margin:4px 0}
+  .check-row input{width:auto}
+  fieldset.topics-done{border:1px solid var(--line);border-radius:6px;margin:14px 0 0;padding:8px 12px}
+  fieldset.topics-done legend{font-weight:700;font-size:.95rem}
+  .radio-row{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0}
+  .radio-row label{display:flex;gap:6px;align-items:center;font-weight:400;margin:0}
+  .radio-row input{width:auto}
+  .warn-text{color:var(--ochre);font-weight:700}
+  .data-grid{display:grid;gap:0 24px}
+  @media (min-width:900px){.data-grid{grid-template-columns:1fr 1fr}}
+  code{font-family:var(--mono);font-size:.85em;background:var(--stone);padding:1px 5px;border-radius:3px}
 </style>
 </head>
 <body>
@@ -152,32 +214,109 @@
 <div class="wrap">
   <header class="intro">
     <h1>Keep in Touch</h1>
-    <p class="lede">The people who matter, on a rhythm. This tool tells you who you are overdue to
-       reach out to. Everything stays on your device, and nothing is sent anywhere.</p>
+    <p class="lede">The people who matter, on a rhythm you choose. Each week it suggests a few hellos and
+       tells you why each one showed up. Private notes and important dates help you prepare. Everything
+       stays in this browser on this device: nothing is sent anywhere, and nothing is ever sent for you.</p>
   </header>
-  <section class="panel on" id="kit">
-    <form id="add">
-      <div><label for="name">Name</label><input id="name" required placeholder="e.g. Alex"></div>
-      <div><label for="cadence">Every</label>
-        <select id="cadence">
-          <option value="weekly">week</option>
-          <option value="biweekly">2 weeks</option>
-          <option value="monthly" selected>month</option>
-          <option value="quarterly">3 months</option>
-          <option value="semiannually">6 months</option>
-          <option value="annually">year</option>
-        </select>
+
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  <div class="tabs" role="tablist" id="tabs" aria-label="Keep in Touch sections">
+    <button class="tab" role="tab" id="tab-week" aria-controls="panel-week" aria-selected="true">This week</button>
+    <button class="tab" role="tab" id="tab-people" aria-controls="panel-people" aria-selected="false" tabindex="-1">People <span id="count-people" class="hint"></span></button>
+    <button class="tab" role="tab" id="tab-dates" aria-controls="panel-dates" aria-selected="false" tabindex="-1">Dates</button>
+    <button class="tab" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false" tabindex="-1">Your data</button>
+  </div>
+
+  <section class="panel-wrap" role="tabpanel" id="panel-week" aria-labelledby="tab-week">
+    <div class="example-box" id="week-example" hidden>
+      <p class="ex"><span class="tag">Example</span>This is what a week looks like with a few people in it.</p>
+      <p>Add the people you keep meaning to reach. Give each a rhythm that feels generous, not guilt-inducing.</p>
+      <div class="acts">
+        <button class="btn" id="start-add" type="button">Add your first person</button>
+        <button class="btn ghost" id="start-demo" type="button">Explore with sample people</button>
       </div>
-      <div><label for="last">Last talked <span class="hint">(optional)</span></label><input id="last" type="date"></div>
-      <button id="addBtn" class="btn">Add</button>
-    </form>
-    <div class="out on" id="due">
-      <h3>Who to reach out to</h3>
-      <p class="ex" id="exnote" hidden><span class="tag">Example</span>Add your first person and these examples go away.</p>
-      <ul id="list" aria-live="polite"></ul>
     </div>
+    <p class="ex" id="week-demo" hidden><span class="tag">Sample</span>Sample people are loaded.
+      <button type="button" id="week-demo-clear">Remove sample people</button></p>
+    <div class="toolbar">
+      <span class="range" id="week-range"></span>
+      <label for="capacity">Room for
+        <select id="capacity">
+          <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>7</option><option>10</option>
+        </select> hellos this week</label>
+    </div>
+    <div id="week-body" aria-live="polite"></div>
   </section>
 
+  <section class="panel-wrap" role="tabpanel" id="panel-people" aria-labelledby="tab-people" hidden>
+    <div id="people-main" class="people-grid">
+      <form id="add" class="card" novalidate>
+        <h3>Add someone</h3>
+        <label for="add-name">Name</label><input id="add-name" required maxlength="120" placeholder="e.g. Alex, or Sam from college" autocomplete="off">
+        <label for="add-cadence">A hello every</label><div id="add-rhythm"></div>
+        <label for="add-last">Last talked <span class="hint">(optional)</span></label><input id="add-last" type="date">
+        <label for="add-bday">Birthday <span class="hint">(optional: YYYY-MM-DD, or MM-DD)</span></label><input id="add-bday" placeholder="e.g. 05-14" inputmode="numeric">
+        <button class="btn" type="submit">Add</button>
+      </form>
+      <div>
+        <h3>Everyone</h3>
+        <ul id="people-list" aria-live="polite"></ul>
+      </div>
+    </div>
+    <div id="person-detail" hidden></div>
+  </section>
+
+  <section class="panel-wrap" role="tabpanel" id="panel-dates" aria-labelledby="tab-dates" hidden>
+    <p class="meta">Birthdays, anniversaries and other dates in the next 60 days. Dates within a week also show up on This week, on their day.</p>
+    <ul id="dates-list"></ul>
+  </section>
+
+  <section class="panel-wrap" role="tabpanel" id="panel-data" aria-labelledby="tab-data" hidden>
+    <div class="card" id="recovery" hidden>
+      <h3>Recovered data</h3>
+      <p>Saved data on this device could not be read, so the tool started fresh. The unreadable copy is kept here so nothing is lost.</p>
+      <div class="acts"><button class="small" id="recovery-download" type="button">Download the unreadable copy</button>
+        <button class="small" id="recovery-dismiss" type="button">Discard it</button></div>
+    </div>
+    <div class="data-grid">
+      <div>
+        <div class="card">
+          <h3>Where your data lives</h3>
+          <p id="data-status"></p>
+          <p class="meta">No account, no server, no contact syncing. Clearing this browser's site data deletes it, so export now and then.</p>
+          <button class="btn" id="export" type="button">Export everything (.json)</button>
+        </div>
+        <div class="card">
+          <h3>Sample people</h3>
+          <p class="meta">Nine invented people to explore with. They are marked as samples and never exported.</p>
+          <button class="small" id="demo-load" type="button">Load sample people</button>
+          <button class="small" id="demo-clear" type="button" hidden>Remove sample people</button>
+        </div>
+      </div>
+      <div>
+        <form class="card" id="import-form">
+          <h3>Import</h3>
+          <p class="meta">A Keep in Touch export (.json), or a .csv with a header row. CSV columns: <code>name</code> (required),
+            <code>cadence</code>, <code>cadenceDays</code>, <code>lastContacted</code>, <code>birthday</code>, <code>notes</code>,
+            <code>topics</code> (separate with ;). Rows with problems are skipped and listed; the rest still import.</p>
+          <label for="import-file">File</label><input id="import-file" type="file" accept=".json,.csv,application/json,text/csv">
+          <div class="radio-row" role="radiogroup" aria-label="Import mode">
+            <label><input type="radio" name="mode" value="merge" checked> Add to my list</label>
+            <label><input type="radio" name="mode" value="replace"> Replace my list</label>
+          </div>
+          <button class="btn" type="submit">Import</button>
+          <div id="import-report" hidden></div>
+        </form>
+        <form class="card" id="delete-form">
+          <h3>Delete everything</h3>
+          <p class="meta">Removes every person, note and date from this browser. This cannot be undone, so export first if you want a copy.</p>
+          <label for="delete-confirm">Type DELETE to confirm</label><input id="delete-confirm" autocomplete="off">
+          <button class="btn ghost" type="submit">Delete everything</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
   <section class="mc-cta">
     <h3>One useful thing a week</h3>
@@ -197,91 +336,9 @@
   </footer>
 </div>
 
-<script>
-// mirror of tool/keepintouch.js; change both together
-// ---8<--- keepintouch core
-const CADENCES = {
-  weekly: 7, biweekly: 14, monthly: 30, quarterly: 91, semiannually: 182, annually: 365,
-};
-function daysBetween(a, b) {
-  return Math.round(Math.abs(Date.parse(b) - Date.parse(a)) / 86400000);
-}
-function dueContacts(people, today) {
-  const scored = (people || []).map((p) => {
-    const interval = CADENCES[p.cadence];
-    if (!interval) throw new Error('Unknown cadence "' + p.cadence + '" for ' + p.name +
-      ". Use one of: " + Object.keys(CADENCES).join(", ") + ".");
-    if (!p.lastContacted) return { ...p, status: "new", overdueBy: 0, _sort: Infinity };
-    const since = daysBetween(p.lastContacted, today);
-    const overdueBy = Math.max(0, since - interval);
-    return { ...p, status: overdueBy > 0 ? "overdue" : "ok", overdueBy, _sort: since - interval };
-  });
-  scored.sort((a, b) => b._sort - a._sort);
-  return scored.map(({ _sort, ...rest }) => rest);
-}
-// --->8--- keepintouch core
-
-const KEY = "keepintouch.people.v1";
-const $ = (id) => document.getElementById(id);
-const todayISO = () => new Date().toISOString().slice(0, 10);
-const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
-const save = (p) => localStorage.setItem(KEY, JSON.stringify(p));
-
-const EVERY = { weekly: "week", biweekly: "2 weeks", monthly: "month", quarterly: "3 months",
-  semiannually: "6 months", annually: "year" };
-const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
-// Shown until the first real person is added, so the first view shows what the tool does.
-const examplePeople = () => [
-  { name: "Mom", cadence: "weekly", lastContacted: daysAgo(12) },
-  { name: "Sam, college roommate", cadence: "quarterly", lastContacted: daysAgo(130) },
-  { name: "Priya from the old job", cadence: "monthly" },
-  { name: "Uncle Joe", cadence: "monthly", lastContacted: daysAgo(9) },
-];
-function render() {
-  const saved = load();
-  const example = !saved.length;
-  const due = dueContacts(example ? examplePeople() : saved, todayISO());
-  const list = $("list");
-  $("exnote").hidden = !example;
-  list.innerHTML = "";
-  for (const p of due) {
-    const li = document.createElement("li");
-    const tag = p.status === "new" ? "<span class='st new'>new</span>"
-      : p.status === "overdue" ? "<span class='st overdue'>" + p.overdueBy + "d overdue</span>"
-      : "<span class='st ok'>ok</span>";
-    const who = document.createElement("span");
-    who.className = "who";
-    who.innerHTML = "<b></b> " + tag + "<div class='meta'>every " + (EVERY[p.cadence] || p.cadence) +
-      (p.lastContacted ? " · last " + p.lastContacted : " · never talked") + "</div>";
-    who.querySelector("b").textContent = p.name;
-    li.append(who);
-    if (!example) {
-      const done = document.createElement("button");
-      done.className = "small"; done.textContent = "Talked today";
-      done.onclick = () => { const all = load();
-        const t = all.find((x) => x.name === p.name && x.cadence === p.cadence);
-        if (t) { t.lastContacted = todayISO(); save(all); render(); } };
-      const del = document.createElement("button");
-      del.className = "small"; del.textContent = "×"; del.title = "Remove"; del.setAttribute("aria-label", "Remove " + p.name);
-      del.onclick = () => { save(load().filter((x) => !(x.name === p.name && x.cadence === p.cadence))); render(); };
-      li.append(done, del);
-    }
-    list.append(li);
-  }
-}
-$("add").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const name = $("name").value.trim();
-  if (!name) return;
-  const people = load();
-  people.push({ name, cadence: $("cadence").value, lastContacted: $("last").value || undefined });
-  save(people);
-  $("name").value = ""; $("last").value = "";
-  render();
-});
-
-render();
-</script>
+<script src="keepintouch.js"></script>
+<script src="fixtures.js"></script>
+<script src="app.js"></script>
 
 <script>
 (function(){
