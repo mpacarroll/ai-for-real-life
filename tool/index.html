@@ -129,7 +129,7 @@
   h2{font-family:var(--display);font-weight:400;font-size:1.6rem;margin:0}
   h4{margin:16px 0 6px;font-size:.95rem}
   .panel-wrap{padding:20px 0 8px}
-  .notice{display:none;position:sticky;top:8px;z-index:5;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 0;padding:10px 14px;border-radius:8px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);box-shadow:0 10px 24px -18px rgba(0,0,0,.6)}
+  .notice{display:none;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:20;width:min(640px,calc(100% - 32px));align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-radius:8px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);box-shadow:0 14px 34px -14px rgba(0,0,0,.55)}
   .notice.on{display:flex}
   .notice.warn{border-left-color:var(--ochre)}
   .notice span{flex:1;min-width:200px}

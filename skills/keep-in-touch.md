@@ -10,7 +10,7 @@ This is the flagship skill, and the one almost everyone neglects. Relationships 
 1. Open the [Keep in Touch tool](../tool/index.html). It runs in any browser, works offline, and saves nothing to any server. This is a private rhythm, not a social network.
 2. Add the people you keep meaning to reach and losing track of. Start with ten, not a hundred.
 3. Give each a rhythm that feels *generous, not guilt-inducing* — the one you would be glad to keep, not the one you think you "should."
-4. Once a week, open the tool, see who is overdue, send one message, mark them done. That is the whole maintenance.
+4. Once a week, open **This week**. It suggests a few people (you choose how many fit), each with the reason it showed up: your rhythm, a birthday on its day, something you meant to ask about. Send one message, tap "We talked". Not this week? Snooze it. Not this season? Pause it. Nothing keeps score.
 
 **Where AI earns its place (and where it doesn't).** The reason keeping in touch feels like a chore is the blank page: "hey, long time, how are you." AI is genuinely useful for beating that blank page. Keep a note of what someone is going through and ask for a warm, specific opener ("draft a short, low-pressure check-in about his mom's surgery"). It is good at turning a fact you already know into a first line. Where it does not belong: deciding who matters, or auto-sending anything. A four-line message you actually wrote beats a polished one you didn't. The tool times the reach-out; you do the reaching.
 
