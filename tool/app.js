@@ -538,6 +538,17 @@
     commit({ ...state, people: state.people.filter((p) => !p.demo) }, "Sample people removed.", () => commit(before));
   }
 
+  // ---------- other tabs ----------
+  // Another tab of this page saved. Reload from storage so this tab's next
+  // change builds on that save instead of overwriting it.
+  window.addEventListener("storage", (e) => {
+    if (e.key !== KEY && e.key !== null) return;
+    state = load();
+    if (openId && !find(openId)) openId = null;
+    render();
+    notify("Updated with changes made in another tab.");
+  });
+
   // ---------- boot ----------
   state = load();
   wire();

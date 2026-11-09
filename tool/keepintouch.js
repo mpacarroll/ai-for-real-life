@@ -107,7 +107,9 @@
       if (!m || !isValidRecurringDate(dateStr)) throw new Error(`Not a date: "${dateStr}". Use YYYY-MM-DD or MM-DD.`);
       month = +m[1]; day = +m[2];
     }
-    const ty = +today.slice(0, 4);
+    // A full date in a future year (a planned wedding) has no occurrence
+    // before that year, so the search starts there.
+    const ty = Math.max(+today.slice(0, 4), year || 0);
     for (let y = ty; y <= ty + 1; y++) {
       const d = month === 2 && day === 29 && !isLeap(y) ? 28 : day;
       const iso = `${y}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
@@ -211,6 +213,8 @@
   // ---------- reminders: what is due, and why ----------
 
   function daysAgoText(n) {
+    // A future date can arrive through import or a clock change; say so plainly.
+    if (n < 0) return "a date that has not happened yet";
     return n === 0 ? "today" : n === 1 ? "yesterday" : `${n} days ago`;
   }
 
@@ -613,7 +617,7 @@
     let added = 0, updated = 0;
     rawPeople.forEach((raw, i) => {
       let p;
-      try { p = normalizePerson(raw, genId); }
+      try { p = normalizePerson(raw, genId); delete p.demo; }
       catch (e) { skipped.push({ row: i + 1, name: (raw && raw.name) || "", reason: e.message }); return; }
       const byId = raw && raw.id ? people.findIndex((x) => x.id === p.id) : -1;
       if (byId >= 0) { people[byId] = p; updated++; return; }

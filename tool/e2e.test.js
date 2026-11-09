@@ -171,6 +171,23 @@ test("planner works end to end in a browser", { skip: !chromium && "playwright n
       assert.ok(await page.isVisible("#recovery"));
     });
 
+    await t.test("a second tab's save is picked up, not overwritten", async () => {
+      await page.evaluate(() => localStorage.clear());
+      await page.reload();
+      const other = await ctx.newPage();
+      await other.goto(base);
+      await other.click("#tab-people");
+      await other.fill("#add-name", "Tab Bea");
+      await other.click("#add button[type=submit]");
+      await page.waitForFunction(() => /another tab/.test(document.querySelector("#notice").textContent));
+      await page.click("#tab-people");
+      await page.fill("#add-name", "Tab Al");
+      await page.click("#add button[type=submit]");
+      const names = await page.evaluate(() => JSON.parse(localStorage.getItem("keepintouch.v2")).people.map((p) => p.name).sort());
+      assert.deepStrictEqual(names, ["Tab Al", "Tab Bea"]);
+      await other.close();
+    });
+
     await t.test("phone width has no horizontal scroll", async () => {
       await page.evaluate(() => localStorage.clear());
       await page.setViewportSize({ width: 375, height: 800 });

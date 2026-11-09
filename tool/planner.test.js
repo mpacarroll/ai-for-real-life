@@ -256,3 +256,27 @@ test("the demo fixture is valid and produces a realistic week", () => {
   assert.ok(plan.snoozed.some((x) => x.name === "Tom Becker"));
   assert.ok(plan.later.length >= 1, "capacity leaves something for later");
 });
+
+test("review fixes: future dates read plainly, never as negative numbers", () => {
+  // a planned wedding next year has no occurrence this year
+  const ev = K.nextOccurrence("2027-06-12", TODAY);
+  assert.deepStrictEqual(ev, { date: "2027-06-12", daysAway: 215, years: 0 });
+  const far = K.nextOccurrence("2029-01-02", TODAY);
+  assert.strictEqual(far.date, "2029-01-02");
+  const p = person({ name: "Wed", dates: [{ kind: "anniversary", label: "Wedding", date: "2026-11-11" }, { kind: "anniversary", label: "Next", date: "2027-11-10" }] });
+  const texts = K.upcomingDates([p], TODAY, 400).map((d) => d.text).join(" ");
+  assert.ok(!/-\d/.test(texts), texts);
+  // a last-talked date in the future (from an import) never shows "-3 days ago"
+  const f = person({ name: "Fut", cadence: "weekly", lastContacted: "2026-11-12" });
+  const prep = K.prepFor(f, TODAY);
+  assert.ok(!/-\d/.test(prep.lastTalked), prep.lastTalked);
+  assert.match(prep.lastTalked, /not happened yet/);
+});
+
+test("review fixes: imported rows never keep the sample flag, so export never drops them", () => {
+  const file = JSON.stringify({ format: K.EXPORT_FORMAT, version: 2, people: [{ id: "x1", name: "Real Rae", demo: true }] });
+  const r = K.importText(file, K.createState(), "merge", gen);
+  assert.strictEqual(r.added, 1);
+  assert.strictEqual(r.state.people[0].demo, undefined);
+  assert.match(K.exportState(r.state, TODAY), /Real Rae/);
+});
