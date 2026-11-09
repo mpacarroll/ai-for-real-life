@@ -6,7 +6,7 @@ I'm Mick. This is the calm, do-less version of getting organized. Learn one skil
 
 ## Start here
 1. **[Start With One Skill](skills/start-with-one.md)** — why one-at-a-time beats a life overhaul, and how to pick your first.
-2. **[Keep in Touch](tool/index.html)** — the flagship tool. Open it in any browser (works offline, saves nothing to any server). Add the people you keep losing touch with, give each a rhythm, and it tells you who you're overdue to reach out to.
+2. **[Keep in Touch](tool/index.html)**, the flagship tool. Open it in any browser (works offline, saves nothing to any server). Add the people you keep losing touch with and give each a rhythm. Each week it suggests a few hellos and says why each one showed up, with private notes, important dates and conversation prep beside them. How it works: [docs/keep-in-touch.md](docs/keep-in-touch.md).
 3. **[The Skills](skills/README.md)** — the whole library, grouped by what each one buys you.
 
 ## The idea
