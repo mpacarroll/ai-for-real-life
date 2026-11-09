@@ -6,13 +6,13 @@ const path = require("node:path");
 
 const html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
 
-test("index.html loads keepintouch.js, fixtures.js and app.js, in that order", () => {
+test("index.html loads keepintouch.js, interop.js, fixtures.js and app.js, in that order", () => {
   const srcs = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map((m) => m[1]);
-  assert.deepStrictEqual(srcs, ["keepintouch.js", "fixtures.js", "app.js"]);
+  assert.deepStrictEqual(srcs, ["keepintouch.js", "interop.js", "fixtures.js", "app.js"]);
 });
 
 test("index.html carries no inline copy of the core", () => {
-  assert.ok(!/function dueContacts|function weeklyPlan|const CADENCES/.test(html));
+  assert.ok(!/function dueContacts|function weeklyPlan|const CADENCES|function parseVCards|function datesToICS/.test(html));
 });
 
 test("the page never uses innerHTML with data, and never sends a message", () => {

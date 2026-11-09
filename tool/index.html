@@ -199,6 +199,14 @@
   .radio-row input{width:auto}
   .warn-text{color:var(--ochre);font-weight:700}
   .data-grid{display:grid;gap:0 24px}
+  .pick-list{list-style:none;padding:0;margin:8px 0;max-height:360px;overflow:auto;border:1px solid var(--line, #ddd);border-radius:8px}
+  .pick-list li{padding:8px 10px;border-bottom:1px solid var(--line, #eee)}
+  .pick-list li:last-child{border-bottom:0}
+  .pick-list label{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:0}
+  .pick-list input{width:auto;margin-top:4px}
+  .pick-list .meta{display:block}
+  .pick-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pick-tools input[type=search]{flex:1 1 180px;width:auto}
   @media (min-width:900px){.data-grid{grid-template-columns:1fr 1fr}}
   code{font-family:var(--mono);font-size:.85em;background:var(--stone);padding:1px 5px;border-radius:3px}
 </style>
@@ -245,6 +253,7 @@
         <select id="capacity">
           <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>7</option><option>10</option>
         </select> hellos this week</label>
+      <button class="small" id="ics-week-top" type="button">Add this week to my calendar</button>
     </div>
     <div id="week-body" aria-live="polite"></div>
   </section>
@@ -269,6 +278,7 @@
 
   <section class="panel-wrap" role="tabpanel" id="panel-dates" aria-labelledby="tab-dates" hidden>
     <p class="meta">Birthdays, anniversaries and other dates in the next 60 days. Dates within a week also show up on This week, on their day.</p>
+    <p><button class="small" id="ics-dates-top" type="button">Add all dates to my calendar</button></p>
     <ul id="dates-list"></ul>
   </section>
 
@@ -308,6 +318,23 @@
           <button class="btn" type="submit">Import</button>
           <div id="import-report" hidden></div>
         </form>
+        <div class="card" id="vcf-card">
+          <h3>Bring in birthdays from your contacts</h3>
+          <p class="meta">Export a .vcf file from your phone or mail app (for example, select contacts and choose Share or Export), then pick it here.
+            Only names and dates are read: birthdays, anniversaries and other labeled dates. Phone numbers, emails, addresses and notes in the file are ignored and never saved.
+            You choose who to add.</p>
+          <label for="vcf-file">Contacts file (.vcf)</label><input id="vcf-file" type="file" accept=".vcf,text/vcard,text/x-vcard">
+          <div id="vcf-pick" hidden></div>
+        </div>
+        <div class="card" id="ics-card">
+          <h3>Add to your calendar</h3>
+          <p class="meta">Download an .ics file and open it with your calendar app. Dates repeat every year. The file holds names and date labels only, never your private notes. Sample people are left out.</p>
+          <div class="acts">
+            <button class="small" id="ics-dates" type="button">Important dates (.ics)</button>
+            <button class="small" id="ics-week" type="button">This week's plan (.ics)</button>
+          </div>
+          <p class="hint">The weekly file includes why each hello showed up, so it can carry the things you plan to ask about.</p>
+        </div>
         <form class="card" id="delete-form">
           <h3>Delete everything</h3>
           <p class="meta">Removes every person, note and date from this browser. This cannot be undone, so export first if you want a copy.</p>
@@ -337,6 +364,7 @@
 </div>
 
 <script src="keepintouch.js"></script>
+<script src="interop.js"></script>
 <script src="fixtures.js"></script>
 <script src="app.js"></script>
 

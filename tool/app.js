@@ -5,6 +5,7 @@
   "use strict";
   const K = window.KIT;
   const F = window.KIT_FIXTURES;
+  const IO = window.KIT_IO;
 
   const KEY = "keepintouch.v2";
   const KEY_V1 = "keepintouch.people.v1";
@@ -176,6 +177,7 @@
     $("capacity").value = String(state.settings.weeklyCapacity);
     $("week-example").hidden = !example;
     $("week-demo").hidden = !hasDemo();
+    $("ics-week-top").hidden = example || !plan.planned;
     $("week-range").textContent = `${K.weekday(plan.start)} ${K.formatDate(plan.start)} to ${K.weekday(plan.end)} ${K.formatDate(plan.end)}`;
 
     const kids = [];
@@ -420,6 +422,7 @@
     $("demo-load").hidden = hasDemo();
     $("demo-clear").hidden = !hasDemo();
     $("recovery").hidden = !recoveryRaw && !storeGet(KEY_RECOVERY);
+    renderVcfPick();
   }
 
   function render() {
@@ -507,10 +510,112 @@
       notify("Everything is deleted from this browser. There is no copy anywhere else unless you exported one.", { sticky: true });
     });
 
+    $("vcf-file").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) readVcf(f); });
+    for (const id of ["ics-dates", "ics-dates-top"]) $(id).addEventListener("click", exportDatesICS);
+    for (const id of ["ics-week", "ics-week-top"]) $(id).addEventListener("click", exportWeekICS);
+
     $("recovery-download").addEventListener("click", () => {
       download(`keep-in-touch-recovered-${today()}.txt`, recoveryRaw || storeGet(KEY_RECOVERY) || "", "text/plain");
     });
     $("recovery-dismiss").addEventListener("click", () => { storeDel(KEY_RECOVERY); recoveryRaw = null; render(); });
+  }
+
+  // ---------- contacts in (.vcf) ----------
+  // The parsed file lives only in memory until the person picks who to add.
+  let vcf = null; // { file, contacts, skipped, checked: Set<key> }
+
+  function dateSummary(d) {
+    const iso = d.date.length === 5 ? "2000-" + d.date : d.date;
+    return `${d.label} ${K.formatDate(iso)}`;
+  }
+
+  function renderVcfPick() {
+    const box = $("vcf-pick");
+    if (!vcf) { box.hidden = true; box.replaceChildren(); return; }
+    const matched = IO.matchContacts(vcf.contacts, state.people);
+    const q = vcf.filter.trim().toLowerCase();
+    const shown = matched.filter((c) => (!q || c.name.toLowerCase().includes(q)) && (!vcf.datesOnly || c.dates.length));
+    const selectable = (c) => !c.existingId || c.newDates.length > 0;
+    const picked = matched.filter((c) => vcf.checked.has(c.key) && selectable(c));
+    const newCount = picked.filter((c) => !c.existingId).length;
+    const dateCount = picked.filter((c) => c.existingId).reduce((n, c) => n + c.newDates.length, 0);
+
+    const search = el("input", { type: "search", id: "vcf-filter", placeholder: "Find a name", "aria-label": "Find a name", value: vcf.filter });
+    search.addEventListener("input", () => { vcf.filter = search.value; renderVcfPick(); $("vcf-filter").focus(); });
+    const datesOnly = el("input", { type: "checkbox", id: "vcf-dates-only", checked: vcf.datesOnly });
+    datesOnly.addEventListener("change", () => { vcf.datesOnly = datesOnly.checked; renderVcfPick(); });
+    const rf = rhythmFields("vcf", { cadence: vcf.cadence, cadenceDays: vcf.cadenceDays });
+    rf.sel.addEventListener("change", () => { vcf.cadence = rf.sel.value; });
+    rf.days.addEventListener("input", () => { vcf.cadenceDays = rf.days.value; });
+
+    const rows = shown.map((c) => {
+      const can = selectable(c);
+      const box = el("input", { type: "checkbox", value: c.key, checked: can && vcf.checked.has(c.key), disabled: !can,
+        "aria-label": c.name });
+      box.addEventListener("change", () => { box.checked ? vcf.checked.add(c.key) : vcf.checked.delete(c.key); renderVcfPick(); });
+      const meta = c.existingId
+        ? (c.newDates.length ? `Already in your list. Adds ${c.newDates.map(dateSummary).join(", ")}.` : "Already in your list, nothing new to add.")
+        : (c.dates.length ? c.dates.map(dateSummary).join(", ") : "No dates in this contact.");
+      return el("li", {}, el("label", {}, box, el("span", {}, el("b", { text: c.name }), el("span", { class: "meta", text: meta }))));
+    });
+
+    box.replaceChildren(
+      el("p", { id: "vcf-summary" }, `${vcf.contacts.length} contacts in ${vcf.file}` +
+        (vcf.skipped.length ? `, ${vcf.skipped.length} without a name skipped.` : ".") + " Nothing is added until you choose."),
+      el("div", { class: "pick-tools" }, search,
+        el("label", { class: "check-row" }, datesOnly, " Only contacts with dates"),
+        el("button", { class: "small", type: "button", id: "vcf-all", onclick: () => { shown.filter(selectable).forEach((c) => vcf.checked.add(c.key)); renderVcfPick(); } }, "Select shown"),
+        el("button", { class: "small", type: "button", id: "vcf-none", onclick: () => { vcf.checked.clear(); renderVcfPick(); } }, "Clear")),
+      el("ul", { class: "pick-list", id: "vcf-list", "aria-label": "Contacts in the file" },
+        rows.length ? rows : el("li", { class: "empty" }, "No contacts match.")),
+      el("label", { for: "vcf-cadence" }, "New people get a hello every"), rf.sel, rf.wrap,
+      el("div", { class: "acts" },
+        el("button", { class: "btn", type: "button", id: "vcf-apply", disabled: !picked.length, onclick: applyVcf },
+          picked.length ? `Add ${newCount} ${newCount === 1 ? "person" : "people"}` + (dateCount ? ` and ${dateCount} ${dateCount === 1 ? "date" : "dates"}` : "") : "Choose who to add"),
+        el("button", { class: "small", type: "button", id: "vcf-cancel", onclick: () => { vcf = null; $("vcf-file").value = ""; renderVcfPick(); } }, "Cancel")));
+    box.hidden = false;
+  }
+
+  function applyVcf() {
+    const picked = vcf.contacts.filter((c) => vcf.checked.has(c.key));
+    const rhythm = { cadence: vcf.cadence, cadenceDays: vcf.cadence === "custom" ? vcf.cadenceDays : undefined };
+    const before = state;
+    let r;
+    try { r = IO.applyContacts(state, picked, rhythm, genId, today()); }
+    catch (e) { notify(e.message, { kind: "warn" }); return; }
+    vcf = null;
+    $("vcf-file").value = "";
+    const parts = [`${r.added} ${r.added === 1 ? "person" : "people"} added`];
+    if (r.datesAdded) parts.push(`${r.datesAdded} ${r.datesAdded === 1 ? "date" : "dates"} added to people already in your list`);
+    commit(r.state, parts.join(", ") + ".", () => commit(before));
+  }
+
+  function readVcf(file) {
+    const reader = new FileReader();
+    reader.onerror = () => notify("Could not read that file.", { kind: "warn" });
+    reader.onload = () => {
+      try {
+        const { contacts, skipped } = IO.parseVCards(reader.result);
+        vcf = { file: file.name, contacts, skipped, checked: new Set(), filter: "", datesOnly: false, cadence: "monthly", cadenceDays: "21" };
+      } catch (e) { vcf = null; notify(e.message, { kind: "warn" }); }
+      renderVcfPick();
+    };
+    reader.readAsText(file);
+  }
+
+  // ---------- calendar out (.ics) ----------
+  function exportDatesICS() {
+    const r = IO.datesToICS(state.people, today());
+    if (!r.count) { notify(hasDemo() ? "No dates to add yet. Sample people are left out of calendar files." : "No dates to add yet. Add a birthday on someone's page first.", { kind: "warn" }); return; }
+    download(`keep-in-touch-dates-${today()}.ics`, r.text, "text/calendar");
+    notify(`Downloaded ${r.count} ${r.count === 1 ? "date" : "dates"}. Open the file with your calendar app. Each one repeats every year.`);
+  }
+
+  function exportWeekICS() {
+    const r = IO.planToICS(state.people, today(), state.settings.weeklyCapacity);
+    if (!r.count) { notify(hasDemo() ? "Nothing planned to add. Sample people are left out of calendar files." : "Nothing planned this week, so there is nothing to add.", { kind: "warn" }); return; }
+    download(`keep-in-touch-week-${today()}.ics`, r.text, "text/calendar");
+    notify(`Downloaded ${r.count} ${r.count === 1 ? "hello" : "hellos"} for this week. Open the file with your calendar app.`);
   }
 
   function showImportReport(r, error) {

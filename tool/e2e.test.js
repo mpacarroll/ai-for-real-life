@@ -162,6 +162,57 @@ test("planner works end to end in a browser", { skip: !chromium && "playwright n
       fs.unlinkSync(csv);
     });
 
+    await t.test("contacts file: pick who to add, only names and dates kept, then calendar files", async () => {
+      await page.evaluate(() => localStorage.clear());
+      await page.reload();
+      await page.click("#tab-data");
+      await page.setInputFiles("#vcf-file", path.join(__dirname, "fixtures", "sample-contacts.vcf"));
+      await page.waitForSelector("#vcf-pick:not([hidden])");
+      assert.match(await page.textContent("#vcf-summary"), /6 contacts in sample-contacts\.vcf, 1 without a name skipped/);
+      assert.strictEqual(await page.locator("#vcf-list li").count(), 6);
+      assert.ok(await page.isDisabled("#vcf-apply"), "nothing is preselected");
+      assert.ok(!/555|example\.com/.test(await page.textContent("#vcf-pick")), "phone and email never shown");
+      await page.check("#vcf-dates-only");
+      assert.strictEqual(await page.locator("#vcf-list li").count(), 5);
+      await page.fill("#vcf-filter", "tom");
+      assert.deepStrictEqual(await page.locator("#vcf-list b").allTextContents(), ["Tomas Ferreira"]);
+      await page.fill("#vcf-filter", "");
+      await page.click("#vcf-all");
+      await page.selectOption("#vcf-cadence", "quarterly");
+      assert.strictEqual((await page.textContent("#vcf-apply")).trim(), "Add 5 people");
+      if (shots) await page.screenshot({ path: path.join(shots, "6-contacts-pick.png"), fullPage: true });
+      await page.click("#vcf-apply");
+      assert.match(await page.textContent("#notice"), /5 people added/);
+      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("keepintouch.v2")).people);
+      assert.deepStrictEqual(saved.map((p) => p.name).sort(), ["Elsa Lindqvist", "Grace Whitaker-Nnamdi", "Lucía Baños", "Mom", "Tomas Ferreira"]);
+      assert.ok(saved.every((p) => p.cadence === "quarterly"));
+      assert.ok(!/555|example\.com|Example St|Do not import/.test(JSON.stringify(saved)), "nothing but names and dates stored");
+      assert.deepStrictEqual(saved.find((p) => p.name === "Elsa Lindqvist").dates.map((d) => d.date), ["1987-03-14", "2015-09-19"]);
+
+      // the same file again: everyone is already there with nothing new
+      await page.setInputFiles("#vcf-file", path.join(__dirname, "fixtures", "sample-contacts.vcf"));
+      await page.waitForSelector("#vcf-pick:not([hidden])");
+      assert.match(await page.textContent("#vcf-list"), /Already in your list, nothing new to add/);
+      assert.strictEqual(await page.locator("#vcf-list input:not([disabled])").count(), 1, "only Dev, who has no match, is pickable");
+      await page.click("#vcf-cancel");
+      assert.ok(await page.isHidden("#vcf-pick"));
+
+      const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#ics-dates")]);
+      assert.match(dl.suggestedFilename(), /^keep-in-touch-dates-2026-11-09\.ics$/);
+      const ics = fs.readFileSync(await dl.path(), "utf8");
+      assert.match(ics, /^BEGIN:VCALENDAR\r\n/);
+      assert.match(ics, /SUMMARY:Elsa Lindqvist: Birthday/);
+      assert.match(ics, /RRULE:FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=-1/);
+      assert.strictEqual((ics.match(/BEGIN:VEVENT/g) || []).length, 8);
+
+      await page.click("#tab-week");
+      assert.ok(await page.isVisible("#ics-week-top"));
+      const [wk] = await Promise.all([page.waitForEvent("download"), page.click("#ics-week-top")]);
+      const week = fs.readFileSync(await wk.path(), "utf8");
+      assert.match(week, /SUMMARY:Say hello to /);
+      assert.match(week, /DESCRIPTION:Why this showed up:/);
+    });
+
     await t.test("corrupt saved data is kept for recovery, not thrown away", async () => {
       await page.evaluate(() => localStorage.setItem("keepintouch.v2", "{broken"));
       await page.reload();
