@@ -12,6 +12,8 @@ The tool at [`tool/`](../tool/index.html) is a private, local relationship plann
 | **Snooze, pause, remove** | Snooze for 3 days to a month. Pause keeps the notes and stops all reminders. Remove has an Undo. There are no streaks, no red "overdue" badges, no counts of missed weeks. |
 | **Dates** | Every birthday, anniversary or other date in the next 60 days. Dates without a year (`MM-DD`) are fine. Feb 29 falls on Feb 28 in other years. |
 | **Your data** | Export everything as JSON. Import a JSON export or a CSV (merge or replace). Delete everything (type DELETE to confirm). Load or remove nine invented sample people. |
+| **Contacts file (.vcf)** | Bring in birthdays and anniversaries from a contacts file you exported yourself. A pick list shows every contact with the dates found; nothing is preselected. Search, show only contacts with dates, select what is shown, and choose the rhythm new people get. A name already in your list only gains its missing dates: notes, rhythm and history are never touched. Phone numbers, emails, addresses, photos and notes in the file are never read into the tool. |
+| **Calendar files (.ics)** | Download every important date as yearly all-day events, or this week's plan as one event per hello with the reasons it showed up. Open the file with any calendar app. Names and date labels only; private notes never go into a calendar file. Sample people are left out. Buttons sit on Your data, This week and Dates. |
 
 ## Try it
 
@@ -65,12 +67,24 @@ Ranking is lateness relative to each person's own rhythm (days past due divided 
 
 CSV import columns (header row, any order, case-insensitive): `name` (required), `cadence`, `cadenceDays`, `lastContacted`, `birthday`, `notes`, `topics` (separate with `;`).
 
+### Contacts files
+
+`tool/interop.js` reads vCard 2.1, 3.0 and 4.0: `FN` (falling back to `N`, then `ORG`), `BDAY`, `ANNIVERSARY`, `X-ANNIVERSARY`, and Apple's grouped `X-ABDATE` with its `X-ABLabel`. Date forms: `1990-04-12`, `19900412`, timestamps, `--0412` (no year), and Apple's omitted year (`1604-..` or `X-APPLE-OMIT-YEAR`). It unfolds continuation lines, decodes quoted-printable 2.1 cards and unescapes `\,` `\;` `\n`. A card with no name is skipped and counted. Two picked cards with the same name become one person. A sample file is at `tool/fixtures/sample-contacts.vcf` (synthetic).
+
+How to get a .vcf: on iPhone, open Contacts, open a contact or a list, and choose Share or Export. On Android, Contacts, Settings, Export. In Google Contacts or Outlook, select contacts and Export as vCard.
+
+### Calendar files
+
+RFC 5545, CRLF line endings, folded at 75 octets without splitting a character. Each date is an all-day `VEVENT` with `RRULE:FREQ=YEARLY`. A known year starts on the real date; a date with no year starts on its next occurrence. Feb 29 uses `BYMONTH=2;BYMONTHDAY=-1`, so it lands on Feb 28 in other years. UIDs are stable per person and date, so importing again updates rather than duplicates in most calendar apps.
+
 ## Failure recovery
 
 - **Old data:** the v1 list (`keepintouch.people.v1`) is migrated on first load. The v1 key is left in place as a backup.
 - **Unreadable saved data:** the tool starts fresh, keeps the unreadable text under `keepintouch.recovery`, and offers it as a download on Your data.
 - **Storage blocked or full:** a notice says changes last until the tab closes and points to Export.
-- **Undo:** snooze, pause, log, remove, import and loading samples all offer Undo for a few seconds.
+- **Undo:** snooze, pause, log, remove, import, adding from a contacts file and loading samples all offer Undo for a few seconds.
+- **Two tabs:** when another tab saves, this tab reloads from storage before your next change, so neither overwrites the other.
+- **Contacts file problems:** a file with no cards says so and changes nothing; nameless cards are skipped and counted.
 
 ## Tests
 
@@ -78,4 +92,4 @@ CSV import columns (header row, any order, case-insensitive): `name` (required),
 cd tool && node --test
 ```
 
-`planner.test.js` covers the core (dates, reasons, plan, prep, import and export). `keepintouch.test.js` keeps the v1 behavior. `no_drift.test.js` checks the page loads the tested module and makes no network calls. `e2e.test.js` drives the real page in Chromium through Playwright, and skips when Playwright is not installed.
+`interop.test.js` covers contacts parsing, matching and merging, and calendar output (structural RFC 5545 checks, folding, leap days). `planner.test.js` covers the core (dates, reasons, plan, prep, import and export). `keepintouch.test.js` keeps the v1 behavior. `no_drift.test.js` checks the page loads the tested module and makes no network calls. `e2e.test.js` drives the real page in Chromium through Playwright, and skips when Playwright is not installed.
