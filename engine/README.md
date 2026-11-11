@@ -11,7 +11,7 @@ they claim to read. Seventy-three distinct items appeared. The findings:
 
 **1. The page was copied forward, never rebuilt.** Each brief was yesterday's
 HTML with regex edits. Items survived by default and left only when a session
-remembered to delete them. Sean and Jake Y ran 14 days straight. The pork claim
+remembered to delete them. Sean and Jake Y ran 14 days straight. Another item
 ran 12. Seven stray `</div>` tags accumulated in the file. Nothing in the
 process ever asked "does this still earn its place?"
 
