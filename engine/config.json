@@ -1,0 +1,25 @@
+{
+  "name": "MC",
+  "place": "New York",
+  "max_open_loops": 5,
+  "demote_after_days": 3,
+  "park_after_days": 6,
+  "parked_names_max": 8,
+  "kit_max": 2,
+  "kit_pool": 8,
+  "kit_cooldown_days": 5,
+  "optional_titles": [
+    "Dan",
+    "Chelsea and Westminster",
+    "Tennis Practice",
+    "BQ Flea",
+    "Salsa 101",
+    "McCarren Park Market",
+    "We Are Not Saints",
+    "Make Calls",
+    "Pick Sponsor Reading",
+    "Read BB and LS",
+    "Pack Running Gear For Sunday",
+    "Bouncer"
+  ]
+}
