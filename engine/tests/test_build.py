@@ -85,6 +85,14 @@ class RankingTests(unittest.TestCase):
         seen = bb.merge_into_ledger(state, {"candidates": cands}, TODAY, CFG, r)
         self.assertEqual(bb.select_loops(state, seen, TODAY, CFG, r), ["thu", "sat"])
 
+    def test_security_alert_beats_old_overdue_rows(self):
+        state = {"items": {}}
+        cands = [cand("sec", kind="security", basis="confirmed: Google email")]
+        cands += [cand(f"old{i}", due="2026-10-01", basis="confirmed: email") for i in range(6)]
+        r = report()
+        seen = bb.merge_into_ledger(state, {"candidates": cands}, TODAY, CFG, r)
+        self.assertIn("sec", bb.select_loops(state, seen, TODAY, CFG, r))
+
     def test_old_mick_only_item_parks_into_one_line(self):
         state = {"items": {"a": {"status": "open", "surfaced_days": CFG["park_after_days"], "owner": "mick"}}}
         r = report()

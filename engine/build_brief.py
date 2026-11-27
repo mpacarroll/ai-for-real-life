@@ -188,7 +188,9 @@ def rank(entry, today, cfg):
         # Inside a week the nearer clock always wins over a better source:
         # each day closer is worth more than the gap between basis tags.
         if d <= 7:
-            score += 200 - 20 * max(d, 0)
+            # A clock that already passed decays 20 a day to a floor of 60, so a
+            # weeks-old overdue row cannot outrank a live security alert.
+            score += max(200 - 20 * abs(d), 60) if d < 0 else 200 - 20 * d
         elif d <= 14:
             score += 40
     basis = entry.get("basis", "")
