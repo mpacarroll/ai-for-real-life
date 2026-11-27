@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+@font-face{font-family:'Fraunces';src:url(data:font/woff2;base64,{{FONT}}) format('woff2');font-weight:600;font-style:normal;font-display:block;}
+:root{--bg:#FCFCFB;--wash:#F9F9F7;--ink:#2E2C27;--ink-soft:#6B6A63;--ink-grey:#B4B3A8;--hair:#E4E3DC;--line:#E1E1DF;--clay:#C6613F;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+.band{width:100%;padding:56px 28px 48px;}
+.top{background:var(--wash);border-bottom:1px solid var(--line);}
+.inner{max-width:860px;margin:0 auto;}
+.daydate{font-family:-apple-system,"Segoe UI",sans-serif;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:40px;line-height:1.18;margin:0 0 30px;letter-spacing:-.01em;}
+svg{display:block;width:100%;height:auto;margin:0 0 6px;}
+.acts{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:14px;}
+.act{padding:20px 22px 4px 22px;border-left:1px solid var(--hair);}
+.act:first-child{border-left:0;padding-left:0;}
+.act b{display:block;font-family:-apple-system,"Segoe UI",sans-serif;font-size:13px;letter-spacing:.05em;color:var(--ink);margin-bottom:8px;}
+.act p{font-family:-apple-system,"Segoe UI",sans-serif;font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0;}
+h2{font-family:-apple-system,"Segoe UI",sans-serif;font-size:13px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink);font-weight:600;margin:0 0 20px;}
+.blk{margin-bottom:46px;}
+.blk:last-child{margin-bottom:0;}
+ol{list-style:none;margin:0;padding:0;}
+li{display:grid;grid-template-columns:38px 1fr;margin-bottom:22px;}
+li:last-child{margin-bottom:0;}
+.n{font-family:-apple-system,"Segoe UI",sans-serif;font-size:14px;color:var(--ink-grey);padding-top:1px;}
+.ti{font-family:-apple-system,"Segoe UI",sans-serif;font-size:15.5px;font-weight:600;color:var(--ink);margin:0 0 5px;line-height:1.4;}
+.sn{font-family:-apple-system,"Segoe UI",sans-serif;font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0;}
+.sn .src{text-decoration:underline;text-decoration-color:#C9C8C0;text-underline-offset:2px;}
+.q{display:block;margin-top:9px;padding-left:14px;border-left:2px solid var(--hair);font-size:14px;line-height:1.6;color:var(--ink-soft);font-family:-apple-system,"Segoe UI",sans-serif;}
+.quiet{font-family:-apple-system,"Segoe UI",sans-serif;font-size:14px;color:var(--ink-soft);margin:0 0 10px;}
+@media (max-width:640px){
+  .band{padding:40px 20px 36px;}
+  h1{font-size:30px;}
+  .acts{grid-template-columns:1fr;}
+  .act{border-left:0;border-top:1px solid var(--hair);padding-left:0;padding-top:18px;}
+  .act:first-child{border-top:0;}
+}
+</style>
+</head>
+<body>
+<div class="band top"><div class="inner">
+  <div class="daydate">{{DAYDATE}}</div>
+  <h1>{{HEADLINE}}</h1>
+  {{TERRAIN}}
+  <div class="acts">
+{{ACTS}}  </div>
+</div></div>
+<div class="band"><div class="inner">
+{{QUIET}}{{REVENUE}}{{LOOPS}}{{KIT}}</div></div>
+</body>
+</html>

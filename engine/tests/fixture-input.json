@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-26",
+  "headline": "A quiet morning, then one appointment and an evening meeting.",
+  "plan": {"afternoon": "Laundry, then the race at 4"},
+  "calendar": [
+    {"start": "2026-10-26T08:00:00-04:00", "end": "2026-10-26T08:15:00-04:00", "title": "Make Calls", "calendar": "service", "type": "Reminder"},
+    {"start": "2026-10-26T14:00:00-04:00", "end": "2026-10-26T14:30:00-04:00", "title": "Travel to the appointment", "calendar": "primary", "type": "Travel"},
+    {"start": "2026-10-26T14:30:00-04:00", "end": "2026-10-26T15:00:00-04:00", "title": "Appointment", "calendar": "primary", "type": "Appointment"},
+    {"start": "2026-10-26T19:00:00-04:00", "end": "2026-10-26T20:00:00-04:00", "title": "Evening meeting", "calendar": "service", "type": "Commitment", "location_short": "Park Slope"},
+    {"start": "2026-10-26T10:30:00-04:00", "end": "2026-10-26T11:30:00-04:00", "title": "Dan", "calendar": "service", "type": "Commitment"}
+  ],
+  "revenue_move": {
+    "title": "Send the vendor the documents it asked for",
+    "sentence": "On the payments settings page. Payouts stay paused until the documents clear.",
+    "basis": "per Otto, Oct 25 pm; pause confirmed: vendor email Oct 23"
+  },
+  "candidates": [
+    {"id": "otto:password", "kind": "security", "owner": "mick", "source": "Otto CFO 2026-10-25 pm",
+     "title": "Change the studio password", "sentence": "Three blocked sign-ins this week.", "basis": "per Otto, Oct 25 pm"},
+    {"id": "notion:claim", "kind": "loop", "owner": "mick", "due": "2026-10-29", "source": "Notion Open Loops",
+     "title": "Claim form: mail by Thursday", "sentence": "Print, sign and mail it.", "basis": "per Otto, Oct 25 pm"},
+    {"id": "notion:vendor", "kind": "loop", "owner": "mick", "source": "Notion Open Loops",
+     "title": "Vendor paused payouts", "sentence": "The processor wants more documentation.", "basis": "confirmed: vendor email Oct 23"},
+    {"id": "notion:old-1", "kind": "loop", "owner": "mick", "source": "Notion Open Loops",
+     "title": "An old decision", "sentence": "Scope it or drop it.", "basis": "unknown"},
+    {"id": "notion:old-2", "kind": "loop", "owner": "mick", "source": "Notion Open Loops",
+     "title": "Another old decision", "sentence": "Only you can see the numbers.", "basis": "unknown"},
+    {"id": "otto:call-1", "kind": "loop", "owner": "mick", "due": "2026-10-27", "source": "Otto CFO 2026-10-25 pm",
+     "title": "Three quick product calls", "sentence": "About 3 minutes.", "basis": "per Otto, Oct 25 pm"},
+    {"id": "otto:call-2", "kind": "loop", "owner": "mick", "due": "2026-10-30", "source": "Otto CFO 2026-10-25 pm",
+     "title": "Submit OK on the app build", "sentence": "October 30 is the latest safe date.", "basis": "per Otto, Oct 25 pm"},
+    {"id": "otto:unclear-1", "kind": "loop", "owner": "mick", "source": "Otto CFO 2026-10-25 pm",
+     "title": "Was billing added?", "sentence": "No receipt seen.", "basis": "unclear: per Otto, no receipt in Gmail"}
+  ],
+  "mick_said": [
+    {"date": "2026-10-25", "text": "Hid the wires", "closes": ["chore:wires"]}
+  ],
+  "confirmations": [],
+  "quiet_lines": [],
+  "people": [
+    {"name": "A", "full_name": "A Example", "cadence": "Weekly", "interval_days": 7, "last_contacted": "2026-06-21", "source": "Phone history", "notes": "", "opener": "A, it has been since June. Coffee this week?"},
+    {"name": "B", "cadence": "Every 2-3 weeks", "interval_days": 11, "last_contacted": "2026-01-06", "source": "Phone history", "notes": "", "hook": "A bet never got cashed in."},
+    {"name": "C", "cadence": "Monthly", "interval_days": 28, "last_contacted": "2023-10-29", "birthday": "2026-10-29", "source": "Phone history", "notes": ""},
+    {"name": "D", "cadence": "Weekly", "interval_days": 6, "last_contacted": "2025-11-10", "source": "Phone history", "notes": ""},
+    {"name": "E", "cadence": "Yearly", "interval_days": 365, "last_contacted": "2026-06-28", "source": "Logged live", "notes": "Sent an amends letter; will not reach out again."},
+    {"name": "F", "cadence": "Every few days", "interval_days": 3, "last_contacted": "2025-05-25", "source": "Placeholder — needs ID", "notes": "Ambiguous"}
+  ]
+}

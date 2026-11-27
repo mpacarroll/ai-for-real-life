@@ -1,5 +1,10 @@
 # The engine
 
+**2026-10-26: the page is now built by `engine/build_brief.py` from a dated
+input file and a durable ledger. Read `engine/README.md` for the staleness audit
+and `engine/gather.md` for the per-beat checklist. The rules below still hold;
+the mechanism that enforces them is the pipeline.**
+
 The operating spec for the assistant that runs the morning brief and evening
 close. Written down because it currently lives in a scheduled-task prompt and
 in one conversation's context, and both of those are things that get lost.
